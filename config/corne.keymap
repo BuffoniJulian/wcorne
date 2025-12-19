@@ -28,7 +28,7 @@
             compatible = "zmk,behavior-tap-dance";
             label = "RIGHT_ARROW";
             #binding-cells = <0>;
-            bindings = <&kp SLASH>, <&kp RIGHT>;
+            bindings = <&kp BACKSLASH>, <&kp RIGHT>;
 
             tapping-term-ms = <200>;
         };
@@ -37,7 +37,7 @@
             compatible = "zmk,behavior-tap-dance";
             label = "DOWN_ARROW";
             #binding-cells = <0>;
-            bindings = <&kp PERIOD>, <&kp DOWN_ARROW>;
+            bindings = <&kp SLASH>, <&kp DOWN_ARROW>;
 
             tapping-term-ms = <200>;
         };
