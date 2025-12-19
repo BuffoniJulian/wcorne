@@ -10,28 +10,28 @@
             compatible = "zmk,behavior-tap-dance";
             label = "UP_ARROW";
             #binding-cells = <0>;
-            bindings = <&kp SEMICOLON>;
+            bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
         };
 
         left_arrow: left_arrow {
             compatible = "zmk,behavior-tap-dance";
             label = "LEFT_ARROW";
             #binding-cells = <0>;
-            bindings = <&kp PERIOD>;
+            bindings = <&kp PERIOD>, <&kp LEFT>;
         };
 
         right_arrow: right_arrow {
             compatible = "zmk,behavior-tap-dance";
             label = "RIGHT_ARROW";
             #binding-cells = <0>;
-            bindings = <&kp SLASH>;
+            bindings = <&kp SLASH>, <&kp RIGHT>;
         };
 
         down_arrow: down_arrow {
             compatible = "zmk,behavior-tap-dance";
             label = "DOWN_ARROW";
             #binding-cells = <0>;
-            bindings = <&kp PERIOD>;
+            bindings = <&kp PERIOD>, <&kp DOWN_ARROW>;
         };
     };
 
