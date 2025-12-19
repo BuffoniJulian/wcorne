@@ -11,6 +11,8 @@
             label = "UP_ARROW";
             #binding-cells = <0>;
             bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
+
+            tapping-term-ms = <200>;
         };
 
         left_arrow: left_arrow {
@@ -18,6 +20,8 @@
             label = "LEFT_ARROW";
             #binding-cells = <0>;
             bindings = <&kp PERIOD>, <&kp LEFT>;
+
+            tapping-term-ms = <200>;
         };
 
         right_arrow: right_arrow {
@@ -25,6 +29,8 @@
             label = "RIGHT_ARROW";
             #binding-cells = <0>;
             bindings = <&kp SLASH>, <&kp RIGHT>;
+
+            tapping-term-ms = <200>;
         };
 
         down_arrow: down_arrow {
@@ -32,6 +38,8 @@
             label = "DOWN_ARROW";
             #binding-cells = <0>;
             bindings = <&kp PERIOD>, <&kp DOWN_ARROW>;
+
+            tapping-term-ms = <200>;
         };
     };
 
