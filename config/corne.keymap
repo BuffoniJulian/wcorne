@@ -6,40 +6,51 @@
     combos { compatible = "zmk,combos"; };
 
     behaviors {
-        up_arrow: up_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "UP_ARROW";
+
+        /* TAB: tap = Tab, hold = RAlt (internal arrow modifier) */
+        tab_nav: tab_nav {
+            compatible = "zmk,behavior-hold-tap";
+            label = "TAB_NAV";
             #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            flavor = "tap-preferred";
+            bindings = <&kp TAB>, <&kp RALT>;
+        };
+
+        /* ; → ; | Tab + ; → ↑ */
+        semicolon_up: semicolon_up {
+            compatible = "zmk,behavior-mod-morph";
+            label = "SEMICOLON_UP";
+            #binding-cells = <0>;
+            mods = <MOD_RALT>;
             bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
-
-            tapping-term-ms = <200>;
         };
 
-        left_arrow: left_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "LEFT_ARROW";
+        /* , → , | Tab + , → ← */
+        comma_left: comma_left {
+            compatible = "zmk,behavior-mod-morph";
+            label = "COMMA_LEFT";
             #binding-cells = <0>;
-            bindings = <&kp PERIOD>, <&kp LEFT>;
-
-            tapping-term-ms = <200>;
+            mods = <MOD_RALT>;
+            bindings = <&kp COMMA>, <&kp LEFT_ARROW>;
         };
 
-        right_arrow: right_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "RIGHT_ARROW";
+        /* . → . | Tab + . → ↓ */
+        period_down: period_down {
+            compatible = "zmk,behavior-mod-morph";
+            label = "PERIOD_DOWN";
             #binding-cells = <0>;
-            bindings = <&kp SLASH>, <&kp RIGHT>;
-
-            tapping-term-ms = <200>;
-        };
-
-        down_arrow: down_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "DOWN_ARROW";
-            #binding-cells = <0>;
+            mods = <MOD_RALT>;
             bindings = <&kp PERIOD>, <&kp DOWN_ARROW>;
+        };
 
-            tapping-term-ms = <200>;
+        /* / → / | Tab + / → → */
+        slash_right: slash_right {
+            compatible = "zmk,behavior-mod-morph";
+            label = "SLASH_RIGHT";
+            #binding-cells = <0>;
+            mods = <MOD_RALT>;
+            bindings = <&kp SLASH>, <&kp RIGHT_ARROW>;
         };
     };
 
@@ -48,10 +59,10 @@
 
         default_layer {
             bindings = <
-&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U  &kp I      &kp O        &kp P        &kp BSPC
-&none      &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J  &kp K      &kp L        &up_arrow    &kp ESCAPE
-&kp LCTRL  &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M  &kp COMMA  &left_arrow  &down_arrow  &right_arrow
-                         &kp LALT  &mo 2  &kp SPACE    &kp RET  &mo 1  &kp LWIN
+&tab_nav   &kp Q   &kp W   &kp E   &kp R   &kp T      &kp Y   &kp U   &kp I   &kp O   &kp P   &kp BSPC
+&kp LSHIFT &kp A   &kp S   &kp D   &kp F   &kp G      &kp H   &kp J   &kp K   &kp L   &semicolon_up &kp ENTER
+&kp LCTRL  &kp Z   &kp X   &kp C   &kp V   &kp B      &kp N   &kp M   &comma_left &period_down &slash_right &kp ESC
+                              &kp LALT &kp SPACE &kp RSHIFT
             >;
         };
 
