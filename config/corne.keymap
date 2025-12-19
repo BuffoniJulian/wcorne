@@ -15,7 +15,7 @@
             #binding-cells = <0>;
             tapping-term-ms = <200>;
             flavor = "tap-preferred";
-            bindings = <&kp TAB>, <&kp RGUI>;
+            bindings = <&kp TAB &kp RGUI>;
         };
 
         /* ; → ; | Tab + ; → ↑ */
@@ -24,7 +24,7 @@
             label = "SEMICOLON_UP";
             #binding-cells = <0>;
             mods = <MOD_RGUI>;
-            bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
+            bindings = <&kp SEMICOLON &kp UP_ARROW>;
         };
 
         /* , → , | Tab + , → ← */
@@ -33,7 +33,7 @@
             label = "COMMA_LEFT";
             #binding-cells = <0>;
             mods = <MOD_RGUI>;
-            bindings = <&kp COMMA>, <&kp LEFT_ARROW>;
+            bindings = <&kp COMMA &kp LEFT_ARROW>;
         };
 
         /* . → . | Tab + . → ↓ */
@@ -42,7 +42,7 @@
             label = "PERIOD_DOWN";
             #binding-cells = <0>;
             mods = <MOD_RGUI>;
-            bindings = <&kp PERIOD>, <&kp DOWN_ARROW>;
+            bindings = <&kp PERIOD &kp DOWN_ARROW>;
         };
 
         /* / → / | Tab + / → → */
@@ -51,7 +51,7 @@
             label = "SLASH_RIGHT";
             #binding-cells = <0>;
             mods = <MOD_RGUI>;
-            bindings = <&kp SLASH>, <&kp RIGHT_ARROW>;
+            bindings = <&kp SLASH &kp RIGHT_ARROW>;
         };
     };
 
