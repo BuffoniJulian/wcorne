@@ -57,10 +57,10 @@
 
         lower_layer {
             bindings = <
-&kp TAB         &none   &none   &none     &none   &kp KP_NUM    &kp N7        &kp N8        &kp N9        &kp KP_DIVIDE  &kp ASTRK        &kp BACKSPACE
-&kp LEFT_SHIFT  &none   &none   &none     &trans  &trans        &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp N0         &kp KP_SUBTRACT  &kp ESCAPE
-&kp LCTRL       &trans  &trans  &trans    &trans  &kp EXCL      &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp PERIOD     &kp EQUAL        &trans
-                                &kp LALT  &trans  &kp SPACE     &kp RET       &trans        &kp LWIN
+&kp TAB         &none  &none  &none     &none   &kp KP_NUM    &kp N7        &kp N8        &kp N9        &kp KP_DIVIDE  &kp ASTRK        &kp BACKSPACE
+&kp LEFT_SHIFT  &none  &none  &none     &none   &none         &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp N0         &kp KP_SUBTRACT  &kp ESCAPE
+&kp LCTRL       &none  &none  &none     &none   &kp EXCL      &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp PERIOD     &kp EQUAL        &none
+                              &kp LALT  &none  &kp SPACE     &kp RET       &none        &kp LWIN
             >;
         };
 
@@ -68,26 +68,26 @@
             bindings = <
 &kp GRAVE         &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4   &kp N5             &kp NUMBER_6   &kp N7     &kp NUMBER_8      &kp NUMBER_9       &kp NUMBER_0   &kp BACKSPACE
 &kp C_PLAY_PAUSE  &kp C_PREV    &kp C_NEXT    &kp C_MUTE    &kp C_VOL_DN   &kp C_VOLUME_UP    &kp MINUS      &kp EQUAL  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp BACKSLASH  &kp ESCAPE
-&trans            &trans        &trans        &trans        &kp C_BRI_DEC  &kp C_BRI_UP       &kp SEMICOLON  &kp SQT    &kp COMMA         &kp PERIOD         &kp SLASH      &trans
-                                              &kp LALT      &trans         &kp SPACE          &kp RET        &trans     &kp LWIN
+&none             &none         &none         &none         &kp C_BRI_DEC  &kp C_BRI_UP       &kp SEMICOLON  &kp SQT    &kp COMMA         &kp PERIOD         &kp SLASH      &none
+                                              &kp LALT      &none         &kp SPACE          &kp RET        &none     &kp LWIN
             >;
         };
 
         layer_3 {
             bindings = <
-&bt BT_NXT  &trans  &trans  &trans  &trans  &bt BT_CLR_ALL    &trans     &trans     &trans    &trans  &trans  &trans
-&bt BT_PRV  &trans  &trans  &trans  &trans  &trans            &trans     &trans     &trans    &trans  &trans  &trans
-&bt BT_CLR  &trans  &trans  &trans  &trans  &trans            &trans     &soft_off  &trans    &trans  &trans  &trans
-                            &trans  &trans  &kp SPACE         &kp ENTER  &trans     &kp LWIN
+&bt BT_NXT  &none  &none  &none  &none  &bt BT_CLR_ALL    &none     &none     &none    &none  &none  &none
+&bt BT_PRV  &none  &none  &none  &none  &none            &none     &none     &none    &none  &none  &none
+&bt BT_CLR  &none  &none  &none  &none  &none            &none     &soft_off  &none    &none  &none  &none
+                            &none  &none  &kp SPACE         &kp ENTER  &none     &kp LWIN
             >;
         };
 
         layer_5 {
             bindings = <
 &kp C_PLAY_PAUSE  &kp C_PREVIOUS  &kp C_NEXT  &kp C_MUTE  &kp C_VOLUME_DOWN  &kp C_VOLUME_UP         &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp PLUS         &kp MINUS     &kp ASTERISK
-&kp LSHFT         &trans          &trans      &trans      &kp ASTERISK       &kp LEFT_PARENTHESIS    &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_NUMBER_0  &kp UP_ARROW  &kp KP_DIVIDE
-&kp LCTRL         &trans          &trans      &trans      &kp UNDER          &kp EXCLAMATION         &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp LEFT         &kp DOWN      &kp RIGHT
-                                              &kp LGUI    &trans             &kp SPACE               &kp RET          &trans           &kp RALT
+&kp LSHFT         &none          &none      &none      &kp ASTERISK       &kp LEFT_PARENTHESIS    &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_NUMBER_0  &kp UP_ARROW  &kp KP_DIVIDE
+&kp LCTRL         &none          &none      &none      &kp UNDER          &kp EXCLAMATION         &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp LEFT         &kp DOWN      &kp RIGHT
+                                              &kp LGUI    &none             &kp SPACE               &kp RET          &none           &kp RALT
             >;
         };
     };
