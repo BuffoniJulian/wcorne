@@ -1,3 +1,5 @@
 build:
   settings:
     board_root: .
+    nice_view: boards/shields/nice_view
+    nice_view_adapter: boards/shields/nice_view_adapter
