@@ -1,3 +1,11 @@
+/*
+ *
+ * Copyright (c) 2023 Collin Hodge
+ * Copyright (c) 2023 The ZMK Contributors
+ * SPDX-License-Identifier: MIT
+ *
+ */
+
 #include <lvgl.h>
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
