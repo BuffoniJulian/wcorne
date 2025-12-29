@@ -1,5 +1,6 @@
 #include <zephyr/kernel.h>
 #include "profile_viewer.h"
+#include "../assets/custom_fonts.h"
 
 static void draw_profile_circles(lv_obj_t *canvas, const struct status_state *state) {
     lv_draw_arc_dsc_t arc_dsc;
@@ -7,9 +8,9 @@ static void draw_profile_circles(lv_obj_t *canvas, const struct status_state *st
     lv_draw_arc_dsc_t arc_dsc_filled;
     init_arc_dsc(&arc_dsc_filled, LVGL_FOREGROUND, 9);
     lv_draw_label_dsc_t label_dsc;
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono, LV_TEXT_ALIGN_CENTER);
     lv_draw_label_dsc_t label_dsc_black;
-    init_label_dsc(&label_dsc_black, LVGL_BACKGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
+    init_label_dsc(&label_dsc_black, LVGL_BACKGROUND, &pixel_operator_mono, LV_TEXT_ALIGN_CENTER);
 
     // Draw circles - positions for 5 profiles in a pattern
     int circle_offsets[5][2] = {
