@@ -1,0 +1,6 @@
+description: Screen cycle behavior for nice_view_gem
+
+compatible: "zmk,behavior-screen-cycle"
+
+include: zero_param.yaml
+

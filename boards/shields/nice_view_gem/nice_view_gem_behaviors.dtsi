@@ -1,0 +1,9 @@
+/ {
+    behaviors {
+        scr_cyc: screen_cycle {
+            compatible = "zmk,behavior-screen-cycle";
+            #binding-cells = <0>;
+        };
+    };
+};
+

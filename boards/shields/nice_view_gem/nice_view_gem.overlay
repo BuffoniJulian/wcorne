@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include "nice_view_gem_behaviors.dtsi"
+
 &nice_view_spi {
     status = "okay";
     nice_view: ls0xx@0 {

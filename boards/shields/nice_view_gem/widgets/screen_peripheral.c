@@ -17,8 +17,11 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "battery.h"
 #include "output.h"
 #include "screen_peripheral.h"
+#include "screen_selector.h"
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
+static int current_screen = 0;
+static lv_obj_t *animation_obj = NULL;
 
 /**
  * Draw buffers
@@ -31,9 +34,57 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     // Draw widgets
     draw_output_status(canvas, state);
     draw_battery_status(canvas, state);
+    draw_screen_selector(canvas, current_screen);
 
     // Rotate for horizontal display
     rotate_canvas(canvas, cbuf);
+}
+
+static void draw_screen_1(lv_obj_t *widget) {
+    // Screen 1: Animation (gem)
+    if (animation_obj == NULL) {
+        animation_obj = lv_obj_create(widget);
+        lv_obj_set_size(animation_obj, SCREEN_HEIGHT, SCREEN_WIDTH);
+        lv_obj_set_style_bg_opa(animation_obj, LV_OPA_TRANSP, 0);
+        lv_obj_set_style_border_width(animation_obj, 0, 0);
+        lv_obj_set_style_pad_all(animation_obj, 0, 0);
+        lv_obj_align(animation_obj, LV_ALIGN_TOP_LEFT, 0, 0);
+        draw_animation(animation_obj);
+    }
+    lv_obj_clear_flag(animation_obj, LV_OBJ_FLAG_HIDDEN);
+}
+
+static void draw_screen_2(lv_obj_t *widget) {
+    // Screen 2: Hide animation for now (can add other content later)
+    if (animation_obj != NULL) {
+        lv_obj_add_flag(animation_obj, LV_OBJ_FLAG_HIDDEN);
+    }
+    
+    // TODO: Add screen 2 content here
+}
+
+static void update_screen_display(struct zmk_widget_screen *widget) {
+    switch (current_screen) {
+        case 0:
+            draw_screen_1(widget->obj);
+            break;
+        case 1:
+            draw_screen_2(widget->obj);
+            break;
+        default:
+            current_screen = 0;
+            draw_screen_1(widget->obj);
+            break;
+    }
+    draw_top(widget->obj, widget->cbuf, &widget->state);
+}
+
+void zmk_widget_screen_cycle(void) {
+    current_screen = (current_screen + 1) % 2;
+    struct zmk_widget_screen *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        update_screen_display(widget);
+    }
 }
 
 /**
@@ -111,11 +162,12 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
-    draw_animation(widget->obj);
-
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
     widget_peripheral_status_init();
+
+    // Initialize with screen 1
+    update_screen_display(widget);
 
     return 0;
 }
