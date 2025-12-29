@@ -34,6 +34,16 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     // Draw widgets
     draw_output_status(canvas, state);
     draw_battery_status(canvas, state);
+
+    // Rotate for horizontal display
+    rotate_canvas(canvas, cbuf);
+}
+
+static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
+    lv_obj_t *canvas = lv_obj_get_child(widget, 1);
+    fill_background(canvas);
+
+    // Draw screen selector at bottom
     draw_screen_selector(canvas, current_screen);
 
     // Rotate for horizontal display
@@ -77,6 +87,7 @@ static void update_screen_display(struct zmk_widget_screen *widget) {
             break;
     }
     draw_top(widget->obj, widget->cbuf, &widget->state);
+    draw_bottom(widget->obj, widget->cbuf2, &widget->state);
 }
 
 void zmk_widget_screen_cycle(void) {
@@ -100,6 +111,7 @@ static void set_battery_status(struct zmk_widget_screen *widget,
     widget->state.battery = state.level;
 
     draw_top(widget->obj, widget->cbuf, &widget->state);
+    draw_bottom(widget->obj, widget->cbuf2, &widget->state);
 }
 
 static void battery_status_update_cb(struct battery_status_state state) {
@@ -139,6 +151,7 @@ static void set_connection_status(struct zmk_widget_screen *widget,
     widget->state.connected = state.connected;
 
     draw_top(widget->obj, widget->cbuf, &widget->state);
+    draw_bottom(widget->obj, widget->cbuf2, &widget->state);
 }
 
 static void output_status_update_cb(struct peripheral_status_state state) {
@@ -161,6 +174,10 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_t *top = lv_canvas_create(widget->obj);
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
+
+    lv_obj_t *bottom = lv_canvas_create(widget->obj);
+    lv_obj_align(bottom, LV_ALIGN_TOP_RIGHT, BUFFER_OFFSET_BOTTOM, 0);
+    lv_canvas_set_buffer(bottom, widget->cbuf2, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
