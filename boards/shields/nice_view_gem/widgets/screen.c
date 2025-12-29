@@ -21,8 +21,10 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "output.h"
 #include "profile_viewer.h"
 #include "screen.h"
+#include "screen_selector.h"
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
+static int current_screen = 0;
 
 /**
  * Draw buffers
@@ -55,8 +57,9 @@ static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     lv_obj_t *canvas = lv_obj_get_child(widget, 2);
     fill_background(canvas);
 
-    // Draw widgets
+    // Draw widgets - layer on left, screen selector on right
     draw_layer_status(canvas, state);
+    draw_screen_selector(canvas, current_screen);
 
     // Rotate for horizontal display
     rotate_canvas(canvas, cbuf);
@@ -118,7 +121,10 @@ static void layer_status_update_cb(struct layer_status_state state) {
 
 static struct layer_status_state layer_status_get_state(const zmk_event_t *eh) {
     uint8_t index = zmk_keymap_highest_layer_active();
-    return (struct layer_status_state){.index = index, .label = zmk_keymap_layer_name(index)};
+    return (struct layer_status_state){
+        .index = index, 
+        .label = zmk_keymap_layer_name(zmk_keymap_layer_index_to_id(index))
+    };
 }
 
 ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, layer_status_update_cb,
@@ -175,6 +181,18 @@ ZMK_SUBSCRIPTION(widget_output_status, zmk_usb_conn_state_changed);
 #if defined(CONFIG_ZMK_BLE)
 ZMK_SUBSCRIPTION(widget_output_status, zmk_ble_active_profile_changed);
 #endif
+
+/**
+ * Screen cycling
+ **/
+
+void zmk_widget_screen_cycle(void) {
+    current_screen = (current_screen + 1) % 2;
+    struct zmk_widget_screen *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        draw_bottom(widget->obj, widget->cbuf3, &widget->state);
+    }
+}
 
 /**
  * Initialization

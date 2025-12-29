@@ -1,78 +1,60 @@
-# Screen Switching for nice_view_gem Peripheral Display
+# Screen Switching for nice_view_gem Display
 
 ## Overview
 
-The nice_view_gem peripheral (right side) display now supports multiple screens that you can switch between using a key combination.
+The nice_view_gem left (central) display supports screen cycling, with a screen selector indicator shown alongside the layer information.
 
-## Features
+## Left Display Layout
 
-- **Screen 1**: Animated gem crystal with battery and signal status + screen selector dots
-- **Screen 2**: Empty for now (can be customized with additional content)
-- **Screen Selector**: Larger dots at the top showing which screen is active
+The left display shows:
+- **Top**: Signal status + Battery percentage
+- **Middle**: Bluetooth profile viewer (5 profiles)  
+- **Bottom**: Layer name + Screen selector dots
 
-## Usage
+## Right Display Layout
 
-### Adding the Screen Cycle Behavior to Your Keymap
+The right (peripheral) display shows:
+- **Top**: Signal status + Battery percentage
+- **Center**: Animated gem crystal
 
-To switch screens, add the `&scr_cyc` behavior to your keymap. This behavior is only active on the peripheral (right) side.
+## Screen Cycling
 
-Example in `corne.keymap`:
+Press `&scr_cyc` in your keymap to cycle through screens on the **left display**. Since behaviors run on the central (left) side in ZMK split keyboards, screen cycling works reliably.
+
+### Adding to Your Keymap
+
+Add the `&scr_cyc` behavior to any layer:
 
 ```dts
-// In your keymap layer, add:
-&scr_cyc  // This will cycle through screens when pressed
+// Example: On a function layer
+&scr_cyc  // Cycles through screens when pressed
 ```
 
 ### Example Key Binding
 
-You can bind it to any key or key combination. Here are some examples:
-
-#### Option 1: Dedicated key
 ```dts
-&scr_cyc  // Press this key to switch screens
+// In LAYER_3:
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &scr_cyc  &trans  &trans  &trans  &trans
 ```
 
-#### Option 2: Layer + key combination
-```dts
-// On a function layer:
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &scr_cyc
-```
+## Customizing Screens
 
-#### Option 3: Mod-tap or hold-tap
-```dts
-&mt LGUI SCR_CYC  // Hold for GUI, tap to cycle screens
-```
-
-## Customizing Screen 2
-
-To add content to Screen 2, edit `boards/shields/nice_view_gem/widgets/screen_peripheral.c`:
-
-Find the `draw_screen_2()` function and add your custom drawing code:
-
-```c
-static void draw_screen_2(lv_obj_t *widget) {
-    if (animation_obj != NULL) {
-        lv_obj_add_flag(animation_obj, LV_OBJ_FLAG_HIDDEN);
-    }
-    
-    // Add your custom content here
-    // Example: Draw text, images, or other widgets
-}
-```
-
-## Adding More Screens
-
-To add more than 2 screens:
+### Adding More Screens
 
 1. Update `NUM_SCREENS` in `widgets/screen_selector.c`
-2. Update the modulo in `zmk_widget_screen_cycle()` in `widgets/screen_peripheral.c`
-3. Add new case statements in `update_screen_display()` for each screen
-4. Create corresponding `draw_screen_X()` functions
+2. Update the modulo in `zmk_widget_screen_cycle()` in `widgets/screen.c`
+3. Add different content based on `current_screen` value in the draw functions
+
+### Screen 1 (Default)
+Shows: Battery, Signal, Profiles, Layer, Screen Selector
+
+### Screen 2
+Currently shows the same content (can be customized to show different information)
 
 ## Technical Details
 
-- The behavior is defined in `widgets/behavior_screen_cycle.c`
-- The device tree binding is in `dts/bindings/behaviors/zmk,behavior-screen-cycle.yaml`
-- The behavior is registered in `nice_view_gem_behaviors.dtsi`
-- Screen state is maintained in `widgets/screen_peripheral.c`
-
+- Screen cycling behavior: `widgets/behavior_screen_cycle.c`
+- Central display: `widgets/screen.c`
+- Peripheral display: `widgets/screen_peripheral.c`  
+- Screen selector widget: `widgets/screen_selector.c`
+- Device tree binding: `dts/bindings/behaviors/zmk,behavior-screen-cycle.yaml`

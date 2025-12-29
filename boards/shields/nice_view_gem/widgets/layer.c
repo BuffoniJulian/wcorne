@@ -1,4 +1,5 @@
 #include <zephyr/kernel.h>
+#include <string.h>
 #include "layer.h"
 #include "../assets/custom_fonts.h"
 
@@ -8,10 +9,12 @@ void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
 
     char text[12] = {};
 
-    if (state->layer_label == NULL) {
+    // Check for both NULL and empty string (same as nice_view)
+    if (state->layer_label == NULL || strlen(state->layer_label) == 0) {
         sprintf(text, "LAYER %i", state->layer_index);
     } else {
         strncpy(text, state->layer_label, 11);
+        text[11] = '\0';  // Ensure null termination
         to_uppercase(text);
     }
 
