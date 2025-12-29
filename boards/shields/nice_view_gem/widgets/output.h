@@ -10,6 +10,8 @@ struct output_status_state {
     int active_profile_index;
     bool active_profile_connected;
     bool active_profile_bonded;
+    bool profiles_connected[5];
+    bool profiles_bonded[5];
 };
 #else
 struct peripheral_status_state {

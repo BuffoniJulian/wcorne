@@ -48,3 +48,9 @@ void init_line_dsc(lv_draw_line_dsc_t *line_dsc, lv_color_t color, uint8_t width
     line_dsc->color = color;
     line_dsc->width = width;
 }
+
+void init_arc_dsc(lv_draw_arc_dsc_t *arc_dsc, lv_color_t color, uint8_t width) {
+    lv_draw_arc_dsc_init(arc_dsc);
+    arc_dsc->color = color;
+    arc_dsc->width = width;
+}
