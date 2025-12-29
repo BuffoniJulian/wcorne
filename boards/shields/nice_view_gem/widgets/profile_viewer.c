@@ -1,6 +1,5 @@
 #include <zephyr/kernel.h>
 #include "profile_viewer.h"
-#include "../assets/custom_fonts.h"
 
 static void draw_profile_circles(lv_obj_t *canvas, const struct status_state *state) {
     lv_draw_arc_dsc_t arc_dsc;
@@ -8,9 +7,9 @@ static void draw_profile_circles(lv_obj_t *canvas, const struct status_state *st
     lv_draw_arc_dsc_t arc_dsc_filled;
     init_arc_dsc(&arc_dsc_filled, LVGL_FOREGROUND, 9);
     lv_draw_label_dsc_t label_dsc;
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono, LV_TEXT_ALIGN_CENTER);
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
     lv_draw_label_dsc_t label_dsc_black;
-    init_label_dsc(&label_dsc_black, LVGL_BACKGROUND, &pixel_operator_mono, LV_TEXT_ALIGN_CENTER);
+    init_label_dsc(&label_dsc_black, LVGL_BACKGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
 
     // Draw circles - positions for 5 profiles in a pattern
     int circle_offsets[5][2] = {
@@ -39,7 +38,8 @@ static void draw_profile_circles(lv_obj_t *canvas, const struct status_state *st
 
         char label[2];
         snprintf(label, sizeof(label), "%d", i + 1);
-        lv_canvas_draw_text(canvas, circle_offsets[i][0] - 8, circle_offsets[i][1] - 10, 16,
+        // Center the text in the circle - adjust x and y for proper centering
+        lv_canvas_draw_text(canvas, circle_offsets[i][0] - 9, circle_offsets[i][1] - 9, 18,
                          (selected ? &label_dsc_black : &label_dsc), label);
     }
 }

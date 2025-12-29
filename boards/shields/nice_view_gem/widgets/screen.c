@@ -19,7 +19,6 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "battery.h"
 #include "layer.h"
 #include "output.h"
-#include "profile.h"
 #include "profile_viewer.h"
 #include "screen.h"
 
@@ -57,7 +56,6 @@ static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     fill_background(canvas);
 
     // Draw widgets
-    draw_profile_status(canvas, state);
     draw_layer_status(canvas, state);
 
     // Rotate for horizontal display

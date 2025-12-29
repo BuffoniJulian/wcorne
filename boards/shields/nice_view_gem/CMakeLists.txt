@@ -8,7 +8,6 @@ if(CONFIG_ZMK_DISPLAY AND CONFIG_NICE_VIEW_WIDGET_STATUS)
   
   if(NOT CONFIG_ZMK_SPLIT OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
   zephyr_library_sources(widgets/layer.c)
-  zephyr_library_sources(widgets/profile.c)
   zephyr_library_sources(widgets/profile_viewer.c)
   zephyr_library_sources(widgets/screen.c)
   else()
