@@ -22,8 +22,13 @@ static int behavior_screen_cycle_init(const struct device *dev) { return 0; }
 
 static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
                                       struct zmk_behavior_binding_event event) {
-#if IS_ENABLED(CONFIG_ZMK_SPLIT) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
-    zmk_widget_screen_cycle();
+#if IS_ENABLED(CONFIG_ZMK_SPLIT)
+    // Only cycle on peripheral side
+    #if !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+        zmk_widget_screen_cycle();
+    #endif
+#else
+    // For non-split builds, do nothing
 #endif
     return ZMK_BEHAVIOR_OPAQUE;
 }

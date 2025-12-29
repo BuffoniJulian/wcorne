@@ -201,6 +201,11 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     widget_layer_status_init();
     widget_output_status_init();
 
+    // Initial draw of all sections
+    draw_top(widget->obj, widget->cbuf, &widget->state);
+    draw_middle(widget->obj, widget->cbuf2, &widget->state);
+    draw_bottom(widget->obj, widget->cbuf3, &widget->state);
+
     return 0;
 }
 
