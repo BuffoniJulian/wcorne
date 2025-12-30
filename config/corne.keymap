@@ -19,6 +19,10 @@
         };
     };
 
+    chosen {
+        zmk,charmap = &charmap_us;
+    };
+
     behaviors {
         up_arrow: up_arrow {
             compatible = "zmk,behavior-tap-dance";
@@ -65,9 +69,17 @@
         
         leader1: leader1 {
             compatible = "zmk,behavior-leader-key";
+            label = "EMAIL_EXPANSION";
             #binding-cells = <0>;
-            email { sequence = <e m a i l>; bindings = < &kp j &kp u &kp l &kp i &kp a &kp n &kp _ &kp b &kp u &kp f &kp f &kp o &kp n &kp i &kp @ &kp h &kp o &kp t &kp m &kp a &kp i &kp l &kp . &kp c &kp o &kp m &kp . &kp a &kp r >; };
+            email { sequence = <e m a i l>; bindings = < &kp j >; };
         };
+
+        hello_world: hello_world {
+            compatible = "zmk,behavior-send-string";
+            #binding-cells = <0>;
+            text = "Hello, world!";
+        };
+
     };
 
     keymap {
@@ -104,7 +116,7 @@
             bindings = <
 &kp F1        &kp F2  &kp F3      &kp F4        &kp F5      &kp F6            &kp F7             &kp F8    &kp F9    &kp F10         &kp F11         &kp F12
 &kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &none              &none     &none     &none           &kp UP_ARROW    &none
-&none         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc  &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
+&none         &none   &none       &none         &none       &hello_world      &ext_power EP_TOG  &scr_cyc  &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
                                   &kp LEFT_ALT  &trans      &kp SPACE         &kp ENTER          &trans    &kp LWIN
             >;
         };
