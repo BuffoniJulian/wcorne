@@ -67,7 +67,7 @@
         };
 
         
-        leader1: leader1 {
+        leader: leader {
             compatible = "zmk,behavior-leader-key";
             label = "EMAIL_EXPANSION";
             #binding-cells = <0>;
@@ -75,6 +75,7 @@
         };
 
         hello_world: hello_world {
+            label = "SEND_HELLO";
             compatible = "zmk,behavior-send-string";
             #binding-cells = <0>;
             text = "Hello, world!";
