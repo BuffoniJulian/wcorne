@@ -71,7 +71,7 @@
             compatible = "zmk,behavior-leader-key";
             #binding-cells = <0>;
             ignore-keys = <LSHFT RSHFT>;
-            leader_sequence_ ## email {
+            leader_sequence_email {
                     bindings = <&kp J>;
                     sequence = <E M A I L>;
                 };
