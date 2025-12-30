@@ -4,6 +4,10 @@
 #include <dt-bindings/zmk/keys.h>
 
 / {
+    chosen {
+        zmk,charmap = &charmap_us;
+    };
+    
     combos {
         compatible = "zmk,combos";
 
@@ -62,14 +66,19 @@
             #binding-cells = <0>;
         };
 
-        
+        email: email {
+            compatible = "zmk,behavior-send-string";
+            #binding-cells = <0>;
+            text = "julian_buffoni@hotmail.com.ar";
+        };
+
         leader: leader {
             compatible = "zmk,behavior-leader-key";
             #binding-cells = <0>;
             ignore-keys = <LSHFT RSHFT>;
             email {
                     sequence = <E M A I L>;
-                    bindings = <&kp J>;
+                    bindings = <&email>;
                 };
         };
 
