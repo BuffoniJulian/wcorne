@@ -49,10 +49,9 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     
     // Always redraw the canvas background first
     fill_background(canvas);
-    draw_screen_selector(canvas, current_screen);
     
     if (current_screen == 0) {
-        // Screen 1: Profile viewer + screen selector
+        // Screen 1: Profile viewer
         draw_profile_viewer_status(canvas, state);
         
         // Hide gem container
@@ -61,7 +60,7 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
             lv_obj_invalidate(gem_container);
         }
     } else {
-        // Screen 2: Gem animation + screen selector
+        // Screen 2: Gem animation
         // Show gem container
         if (gem_container != NULL) {
             lv_obj_clear_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
@@ -76,8 +75,9 @@ static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     lv_obj_t *canvas = lv_obj_get_child(widget, 2);
     fill_background(canvas);
 
-    // Draw layer status only
+    // Draw layer status and screen selector
     draw_layer_status(canvas, state);
+    draw_screen_selector(canvas, current_screen);
 
     // Rotate for horizontal display
     rotate_canvas(canvas, cbuf);
@@ -209,9 +209,12 @@ void zmk_widget_screen_cycle(void) {
     struct zmk_widget_screen *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
         draw_middle(widget->obj, widget->cbuf2, &widget->state);
-        // Force LVGL to refresh the middle canvas
-        lv_obj_t *canvas = lv_obj_get_child(widget->obj, 1);
-        lv_obj_invalidate(canvas);
+        draw_bottom(widget->obj, widget->cbuf3, &widget->state);
+        // Force LVGL to refresh
+        lv_obj_t *middle_canvas = lv_obj_get_child(widget->obj, 1);
+        lv_obj_t *bottom_canvas = lv_obj_get_child(widget->obj, 2);
+        lv_obj_invalidate(middle_canvas);
+        lv_obj_invalidate(bottom_canvas);
     }
 }
 
@@ -228,17 +231,17 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_canvas_set_buffer(top, widget->cbuf, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     lv_obj_t *middle = lv_canvas_create(widget->obj);
-    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 46, 0);  // Moved up (higher x = higher after rotation)
+    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 46, 0);  // Profiles/gem area
     lv_canvas_set_buffer(middle, widget->cbuf2, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
-    lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -30, 0);  // Near bottom of screen
+    lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -22, 0);  // Layer + screen dots area
     lv_canvas_set_buffer(bottom, widget->cbuf3, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     // Create gem animation container for screen 2 (hidden by default)
     gem_container = lv_obj_create(widget->obj);
     lv_obj_set_size(gem_container, 68, 68);
-    lv_obj_set_style_bg_opa(gem_container, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_bg_opa(gem_container, LV_OBJ_FLAG_HIDDEN, 0);
     lv_obj_set_style_border_width(gem_container, 0, 0);
     lv_obj_set_style_pad_all(gem_container, 0, 0);
     lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 46, 0);  // Same as middle canvas
