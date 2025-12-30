@@ -71,7 +71,7 @@
             compatible = "zmk,behavior-leader-key";
             label = "EMAIL_EXPANSION";
             #binding-cells = <0>;
-            email { sequence = <e m a i l>; bindings = < &kp j >; };
+            email { sequence = <e m a i l>; bindings = <&kp j>; };
         };
 
         hello_world: hello_world {
