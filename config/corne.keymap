@@ -69,9 +69,12 @@
         
         leader: leader {
             compatible = "zmk,behavior-leader-key";
-            label = "EMAIL_EXPANSION";
             #binding-cells = <0>;
-            email { sequence = <e m a i l>; bindings = <&kp j>; };
+            ignore-keys = <LSHFT RSHFT>;
+            leader_sequence_ ## email { \
+                    bindings = <&kp J>; \
+                    sequence = <E M A I L>; \
+                };
         };
 
         hello_world: hello_world {
