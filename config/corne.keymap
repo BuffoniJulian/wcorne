@@ -8,15 +8,27 @@
     combos {
         compatible = "zmk,combos";
 
-        to_layer_4 {
-            bindings = <&to 4>;
+        to_layer_0_from_4 {
+            bindings = <&to 0>;
+            key-positions = <40 41>;
+            layers = <4>;
+        };
+
+        to_layer_0_from_5 {
+            bindings = <&to 0>;
+            key-positions = <36 37>;
+            layers = <5>;
+        };
+
+        to_layer_6 {
+            bindings = <&to 6>;
             key-positions = <37 40 36 41>;
         };
 
-        to_layer_0 {
+        to_layer_0_from_6 {
             bindings = <&to 0>;
             key-positions = <36 37 40 41>;
-            layers = <4>;
+            layers = <6>;
         };
     };
 
@@ -29,6 +41,22 @@
     };
 
     behaviors {
+        mo_layer1: mo_layer1 {
+            compatible = "zmk,behavior-tap-dance";
+            label = "MO_LAYER1";
+            #binding-cells = <0>;
+            bindings = <&mo 1>, <&to 5>;
+            tapping-term-ms = <200>;
+        };
+
+        mo_layer2: mo_layer2 {
+            compatible = "zmk,behavior-tap-dance";
+            label = "MO_LAYER2";
+            #binding-cells = <0>;
+            bindings = <&mo 2>, <&to 4>;
+            tapping-term-ms = <200>;
+        };
+
         up_arrow: up_arrow {
             compatible = "zmk,behavior-tap-dance";
             label = "UP_ARROW";
@@ -97,7 +125,7 @@
 &kp TAB         &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U  &kp I      &kp O        &kp P        &kp BSPC
 &kp LEFT_SHIFT  &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J  &kp K      &kp L        &up_arrow    &kp ESCAPE
 &kp LCTRL       &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M  &kp COMMA  &left_arrow  &down_arrow  &right_arrow
-                              &kp LALT  &mo 2  &kp SPACE    &kp RET  &mo 1  &kp LWIN
+                              &kp LALT  &mo_layer2  &kp SPACE    &kp RET  &mo_layer1  &kp LWIN
             >;
         };
 
@@ -122,13 +150,31 @@
         LAYER_3 {
             bindings = <
 &kp F1        &kp F2  &kp F3      &kp F4        &kp F5      &kp F6            &kp F7             &kp F8    &kp F9    &kp F10         &kp F11         &kp F12
-&kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &email             &none     &none     &none           &kp UP_ARROW    &none
+&kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &email             &none     &none     &none           &kp UP_ARROW    &kp ESCAPE
 &none         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc  &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
                                   &kp LEFT_ALT  &trans      &kp SPACE         &kp ENTER          &trans    &kp LWIN
             >;
         };
 
         LAYER_4 {
+            bindings = <
+&kp TAB     &none  &none  &none  &none  &none    &none  &none  &none          &none           &none           &kp BACKSPACE
+&kp LSHIFT  &none  &none  &none  &none  &none    &none  &none  &kp PAGE_DOWN  &kp PAGE_UP     &kp UP_ARROW    &kp ESCAPE
+&kp LCTRL   &none  &none  &none  &none  &none    &none  &none  &none          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
+                          &none  &none  &none    &none  &none  &none
+            >;
+        };
+
+        LAYER_5 {
+            bindings = <
+&none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
+                     &none  &none  &none    &none  &none  &none
+            >;
+        };
+
+        LAYER_6 {
             bindings = <
 &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
 &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
