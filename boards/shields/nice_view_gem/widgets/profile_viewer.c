@@ -11,9 +11,9 @@ static void draw_profile_circles(lv_obj_t *canvas, const struct status_state *st
     lv_draw_label_dsc_t label_dsc_black;
     init_label_dsc(&label_dsc_black, LVGL_BACKGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
 
-    // Draw circles - positions for 5 profiles in a pattern
+    // Draw circles - positions for 5 profiles in a pattern (moved up to reduce gap)
     int circle_offsets[5][2] = {
-        {13, 13}, {55, 13}, {34, 34}, {13, 55}, {55, 55},
+        {13, 5}, {55, 5}, {34, 24}, {13, 43}, {55, 43},
     };
 
     for (int i = 0; i < 5; i++) {
