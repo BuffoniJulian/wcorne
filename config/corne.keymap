@@ -5,10 +5,6 @@
 #include <dt-bindings/zmk/kscan_mock.h>
 
 / {
-    chosen {
-        zmk,charmap = &charmap_us;
-    };
-
     combos {
         compatible = "zmk,combos";
 
@@ -133,7 +129,6 @@
             >;
         };
     };
-
 
     conditional_layers {
         compatible = "zmk,conditional-layers";
