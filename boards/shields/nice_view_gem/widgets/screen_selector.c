@@ -15,7 +15,7 @@ void draw_screen_selector(lv_obj_t *canvas, int current_screen) {
     int dot_spacing = 14;
     int total_width = NUM_SCREENS * dot_spacing - (dot_spacing - dot_size);
     int start_x = (68 - total_width) / 2;  // Center horizontally
-    int y_pos = 50;  // Position below layer text (which is at y=20)
+    int y_pos = 5;  // Near top of canvas = lower on rotated screen
 
     for (int i = 0; i < NUM_SCREENS; i++) {
         int x_pos = start_x + (i * dot_spacing);
