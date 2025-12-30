@@ -225,11 +225,11 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_canvas_set_buffer(top, widget->cbuf, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     lv_obj_t *middle = lv_canvas_create(widget->obj);
-    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 24, 0);
+    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 0, 0);  // Move to top, aligned with battery/signal
     lv_canvas_set_buffer(middle, widget->cbuf2, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
-    lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -44, 0);
+    lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -68, 0);  // Adjusted position for bottom
     lv_canvas_set_buffer(bottom, widget->cbuf3, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     // Create gem animation container for screen 2 (hidden by default)
@@ -238,7 +238,7 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_set_style_bg_opa(gem_container, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(gem_container, 0, 0);
     lv_obj_set_style_pad_all(gem_container, 0, 0);
-    lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 46, 0);
+    lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 0, 0);  // Aligned with middle canvas
     draw_animation(gem_container);
     lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
 

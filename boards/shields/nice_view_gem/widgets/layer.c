@@ -4,8 +4,8 @@
 
 void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
     lv_draw_label_dsc_t label_dsc;
-    // Use bigger Montserrat 18 font for better visibility
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
+    // Use Montserrat 14 font - visible but not too big
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_14, LV_TEXT_ALIGN_CENTER);
 
     char text[12] = {};
 
@@ -19,5 +19,5 @@ void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
     }
 
     // Draw centered in bottom canvas
-    lv_canvas_draw_text(canvas, 0, 2, 68, &label_dsc, text);
+    lv_canvas_draw_text(canvas, 0, 4, 68, &label_dsc, text);
 }
