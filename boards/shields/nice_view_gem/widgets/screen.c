@@ -220,16 +220,19 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     widget->obj = lv_obj_create(parent);
     lv_obj_set_size(widget->obj, SCREEN_HEIGHT, SCREEN_WIDTH);
 
+    // Top canvas: signal + battery (rightmost section)
     lv_obj_t *top = lv_canvas_create(widget->obj);
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
+    // Middle canvas: profiles + screen selector (center section)
     lv_obj_t *middle = lv_canvas_create(widget->obj);
-    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 68, 0);  // Position right next to battery/signal
+    lv_obj_align(middle, LV_ALIGN_TOP_LEFT, 24, 0);  // Using original offset
     lv_canvas_set_buffer(middle, widget->cbuf2, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
+    // Bottom canvas: layer (leftmost section)
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
-    lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, 0, 0);  // Position at left edge
+    lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -44, 0);  // Using original offset
     lv_canvas_set_buffer(bottom, widget->cbuf3, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
 
     // Create gem animation container for screen 2 (hidden by default)
@@ -238,7 +241,7 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_set_style_bg_opa(gem_container, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(gem_container, 0, 0);
     lv_obj_set_style_pad_all(gem_container, 0, 0);
-    lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 68, 0);  // Aligned with middle canvas
+    lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 24, 0);  // Aligned with middle canvas
     draw_animation(gem_container);
     lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
 
