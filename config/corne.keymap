@@ -8,12 +8,12 @@
         compatible = "zmk,combos";
 
         to_layer_4 {
-            bindings = <&sl 4>;
+            bindings = <&to 4>;
             key-positions = <37 40 36 41>;
         };
 
         to_layer_0 {
-            bindings = <&sl 0>;
+            bindings = <&to 0>;
             key-positions = <36 37 38 39 40 41>;
             layers = <4>;
         };
