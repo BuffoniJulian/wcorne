@@ -1,11 +1,11 @@
 #include <zephyr/kernel.h>
 #include <string.h>
 #include "layer.h"
-#include "../assets/custom_fonts.h"
 
 void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
     lv_draw_label_dsc_t label_dsc;
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono, LV_TEXT_ALIGN_CENTER);
+    // Use bigger Montserrat 18 font for better visibility
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
 
     char text[12] = {};
 
@@ -18,6 +18,6 @@ void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
         to_uppercase(text);
     }
 
-    // Draw near top of bottom canvas (same as nice_view)
-    lv_canvas_draw_text(canvas, 0, 5, 68, &label_dsc, text);
+    // Draw centered in bottom canvas
+    lv_canvas_draw_text(canvas, 0, 2, 68, &label_dsc, text);
 }

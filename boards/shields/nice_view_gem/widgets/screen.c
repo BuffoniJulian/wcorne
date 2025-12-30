@@ -16,6 +16,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/keymap.h>
 #include <zmk/usb.h>
 
+#include "animation.h"
 #include "battery.h"
 #include "layer.h"
 #include "output.h"
@@ -25,6 +26,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 static int current_screen = 0;
+static lv_obj_t *gem_container = NULL;
 
 /**
  * Draw buffers
@@ -44,22 +46,38 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
 static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
     lv_obj_t *canvas = lv_obj_get_child(widget, 1);
-    fill_background(canvas);
-
-    // Draw widgets
-    draw_profile_viewer_status(canvas, state);
-
-    // Rotate for horizontal display
-    rotate_canvas(canvas, cbuf);
+    
+    if (current_screen == 0) {
+        // Screen 1: Profile viewer + screen selector
+        // Show canvas, hide gem
+        lv_obj_clear_flag(canvas, LV_OBJ_FLAG_HIDDEN);
+        if (gem_container != NULL) {
+            lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
+        }
+        
+        fill_background(canvas);
+        draw_profile_viewer_status(canvas, state);
+        draw_screen_selector(canvas, current_screen);
+        rotate_canvas(canvas, cbuf);
+    } else {
+        // Screen 2: Gem animation + screen selector
+        // Hide canvas content, show gem
+        fill_background(canvas);
+        draw_screen_selector(canvas, current_screen);
+        rotate_canvas(canvas, cbuf);
+        
+        if (gem_container != NULL) {
+            lv_obj_clear_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
+        }
+    }
 }
 
 static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
     lv_obj_t *canvas = lv_obj_get_child(widget, 2);
     fill_background(canvas);
 
-    // Draw widgets - layer on left, screen selector on right
+    // Draw layer status only
     draw_layer_status(canvas, state);
-    draw_screen_selector(canvas, current_screen);
 
     // Rotate for horizontal display
     rotate_canvas(canvas, cbuf);
@@ -190,7 +208,7 @@ void zmk_widget_screen_cycle(void) {
     current_screen = (current_screen + 1) % 2;
     struct zmk_widget_screen *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-        draw_bottom(widget->obj, widget->cbuf3, &widget->state);
+        draw_middle(widget->obj, widget->cbuf2, &widget->state);
     }
 }
 
@@ -213,6 +231,16 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
     lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -44, 0);
     lv_canvas_set_buffer(bottom, widget->cbuf3, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
+
+    // Create gem animation container for screen 2 (hidden by default)
+    gem_container = lv_obj_create(widget->obj);
+    lv_obj_set_size(gem_container, 68, 68);
+    lv_obj_set_style_bg_opa(gem_container, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_width(gem_container, 0, 0);
+    lv_obj_set_style_pad_all(gem_container, 0, 0);
+    lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 46, 0);
+    draw_animation(gem_container);
+    lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
