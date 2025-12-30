@@ -18,6 +18,6 @@ manifest:
       remote: urob
     - name: zmk-send-string
       remote: send-string
-      # revision: v0.3 # set to same as ZMK version above
+      revision: v0.3 # set to same as ZMK version above
   self:
     path: config
