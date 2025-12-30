@@ -73,7 +73,7 @@
             compatible = "zmk,behavior-leader-key";
             #binding-cells = <0>;
             ignore-keys = <LSHFT RSHFT>;
-            email {
+            email_expansion {
                     sequence = <E M A I L>;
                     bindings = <&email>;
                 };
