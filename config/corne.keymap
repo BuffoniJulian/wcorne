@@ -20,6 +20,16 @@
         };
     };
 
+    macros {
+        emaill: emaill {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp J &kp U &kp L &kp I &kp A &kp N>;
+            wait-ms = <10>;
+            tap-ms = <10>;
+        };
+    };
+
     behaviors {
         up_arrow: up_arrow {
             compatible = "zmk,behavior-tap-dance";
@@ -75,7 +85,7 @@
             ignore-keys = <LSHFT RSHFT>;
             email_expansion {
                     sequence = <E M A I L>;
-                    bindings = <&email>;
+                    bindings = <&emaill>;
                 };
         };
 
