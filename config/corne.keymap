@@ -14,7 +14,7 @@
 
         to_layer_0 {
             bindings = <&to 0>;
-            key-positions = <36 37 38 39 40 41>;
+            key-positions = <36 37 40 41>;
             layers = <4>;
         };
     };
@@ -107,7 +107,7 @@
 &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
 &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
 &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
-                        &none  &none  &none    &none  &none  &none
+                     &none  &none  &none    &none  &none  &none
             >;
         };
     };
