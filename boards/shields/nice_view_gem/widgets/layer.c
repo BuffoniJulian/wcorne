@@ -18,6 +18,6 @@ void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
         to_uppercase(text);
     }
 
-    // Draw centered in bottom canvas
-    lv_canvas_draw_text(canvas, 0, 4, 68, &label_dsc, text);
+    // Draw centered in bottom canvas - move down within canvas
+    lv_canvas_draw_text(canvas, 0, 27, 68, &label_dsc, text);
 }
