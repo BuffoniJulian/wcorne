@@ -5,7 +5,7 @@ manifest:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
     - name: urob
-      url-base: https://github.com/urob
+      url-base: https://github.com/BuffoniJulian
     - name: send-string
       url-base: https://github.com/BuffoniJulian
     # Additional modules containing boards/shields/custom code can be listed here as well
