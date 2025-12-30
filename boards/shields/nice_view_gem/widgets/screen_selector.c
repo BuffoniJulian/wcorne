@@ -10,12 +10,12 @@ void draw_screen_selector(lv_obj_t *canvas, int current_screen) {
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
 
-    // Draw smaller dots at very bottom of canvas, not overlapping with profiles
+    // Draw dots at bottom of canvas
     int dot_size = 8;
     int dot_spacing = 14;
     int total_width = NUM_SCREENS * dot_spacing - (dot_spacing - dot_size);
     int start_x = (68 - total_width) / 2;  // Center horizontally
-    int y_pos = 60;
+    int y_pos = 56;  // Lower position
 
     for (int i = 0; i < NUM_SCREENS; i++) {
         int x_pos = start_x + (i * dot_spacing);
