@@ -4,7 +4,20 @@
 #include <dt-bindings/zmk/keys.h>
 
 / {
-    combos { compatible = "zmk,combos"; };
+    combos {
+        compatible = "zmk,combos";
+
+        to_layer_4 {
+            bindings = <&sl 4>;
+            key-positions = <37 40 36 41>;
+        };
+
+        to_layer_0 {
+            bindings = <&sl 0>;
+            key-positions = <36 37 38 39 40 41>;
+            layers = <4>;
+        };
+    };
 
     behaviors {
         up_arrow: up_arrow {
@@ -86,6 +99,15 @@
 &kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &none              &none     &none     &none           &kp UP_ARROW    &none
 &none         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc  &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
                                   &kp LEFT_ALT  &trans      &kp SPACE         &kp ENTER          &trans    &kp LWIN
+            >;
+        };
+
+        LAYER_4 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                        &trans  &trans  &trans    &trans  &trans  &trans
             >;
         };
     };
