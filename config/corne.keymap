@@ -167,9 +167,9 @@
 
         LAYER_5 {
             bindings = <
-&none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none    &none  &none  &none  &none           &none           &none
+&none  &none  &none  &none  &none  &none    &none  &none  &none  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK
+&none  &none  &none  &none  &none  &none    &none  &none  &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT
                      &none  &none  &none    &none  &none  &none
             >;
         };
