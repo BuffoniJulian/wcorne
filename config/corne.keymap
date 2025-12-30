@@ -61,6 +61,13 @@
             label = "SCREEN_CYCLE";
             #binding-cells = <0>;
         };
+
+        
+        leader1: leader1 {
+            compatible = "zmk,behavior-leader-key";
+            #binding-cells = <0>;
+            email { sequence = <E M A I L>; bindings = < &kp j &kp u &kp l &kp i &kp a &kp n &kp _ &kp b &kp u &kp f &kp f &kp o &kp n &kp i &kp @ &kp h &kp o &kp t &kp m &kp a &kp i &kp l &kp . &kp c &kp o &kp m &kp . &kp a &kp r >; };
+        };
     };
 
     keymap {

@@ -4,11 +4,20 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: urob
+      url-base: https://github.com/urob
+    - name: send-string
+      url-base: https://github.com/BuffoniJulian
     # Additional modules containing boards/shields/custom code can be listed here as well
     # See https://docs.zephyrproject.org/3.2.0/develop/west/manifest.html#projects
   projects:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
+    - name: zmk-leader-key
+      remote: urob
+    - name: zmk-send-string
+      remote: send-string
+      # revision: v0.3 # set to same as ZMK version above
   self:
     path: config
