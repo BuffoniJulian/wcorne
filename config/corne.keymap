@@ -46,7 +46,7 @@
             compatible = "zmk,behavior-tap-dance";
             label = "MO_LAYER1";
             #binding-cells = <0>;
-            bindings = <&mo 1>, <&to 5>;
+            bindings = <&mo 1>, <&to 4>;
             tapping-term-ms = <200>;
         };
 
@@ -54,7 +54,7 @@
             compatible = "zmk,behavior-tap-dance";
             label = "MO_LAYER2";
             #binding-cells = <0>;
-            bindings = <&mo 2>, <&to 4>;
+            bindings = <&mo 2>, <&to 5>;
             tapping-term-ms = <200>;
         };
 
