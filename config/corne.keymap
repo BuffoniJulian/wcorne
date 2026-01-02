@@ -31,6 +31,36 @@
             key-positions = <36 37 40 41>;
             layers = <6>;
         };
+        
+        lalt_a_acute {
+            bindings = <&a_acute>;
+            key-positions = < /* LALT */ 36  /* A */ 13 >;
+        };
+
+        lalt_e_acute {
+            bindings = <&e_acute>;
+            key-positions = <36 15>;
+        };
+
+        lalt_i_acute {
+            bindings = <&i_acute>;
+            key-positions = <36 18>;
+        };
+
+        lalt_o_acute {
+            bindings = <&o_acute>;
+            key-positions = <36 19>;
+        };
+
+        lalt_u_acute {
+            bindings = <&u_acute>;
+            key-positions = <36 16>;
+        };
+
+        lalt_enye {
+            bindings = <&enye>;
+            key-positions = <36 26>;
+        };
     };
 
     macros {
