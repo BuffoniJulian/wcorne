@@ -1,0 +1,5 @@
+description: Pomodoro reset behavior for nice_view_gem
+
+compatible: "zmk,behavior-pom-reset"
+
+include: zero_param.yaml

@@ -43,6 +43,23 @@ config NICE_VIEW_GEM_ANIMATION_MS
     int "Animation length in milliseconds"
     default 960
 
+# Pomodoro Timer Configuration
+config NICE_VIEW_GEM_POMODORO_WORK_DURATION
+    int "Pomodoro work session duration in minutes"
+    default 25
+
+config NICE_VIEW_GEM_POMODORO_SHORT_BREAK
+    int "Pomodoro short break duration in minutes"
+    default 5
+
+config NICE_VIEW_GEM_POMODORO_LONG_BREAK
+    int "Pomodoro long break duration in minutes"
+    default 15
+
+config NICE_VIEW_GEM_POMODORO_LONG_BREAK_INTERVAL
+    int "Number of work sessions before long break"
+    default 4
+
 config NICE_VIEW_WIDGET_STATUS
     select LV_USE_LABEL
     select LV_USE_IMG

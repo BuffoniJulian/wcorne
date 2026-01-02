@@ -1,0 +1,5 @@
+description: Pomodoro start/stop behavior for nice_view_gem
+
+compatible: "zmk,behavior-pom-start-stop"
+
+include: zero_param.yaml

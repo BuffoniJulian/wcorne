@@ -1,0 +1,5 @@
+description: Pomodoro add time behavior for nice_view_gem
+
+compatible: "zmk,behavior-pom-add-time"
+
+include: zero_param.yaml

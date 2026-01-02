@@ -1,0 +1,5 @@
+description: Pomodoro subtract time behavior for nice_view_gem
+
+compatible: "zmk,behavior-pom-sub-time"
+
+include: zero_param.yaml

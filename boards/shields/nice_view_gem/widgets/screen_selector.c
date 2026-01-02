@@ -1,7 +1,7 @@
 #include <zephyr/kernel.h>
 #include "screen_selector.h"
 
-#define NUM_SCREENS 2
+#define NUM_SCREENS 3
 
 void draw_screen_selector(lv_obj_t *canvas, int current_screen) {
     lv_draw_rect_dsc_t rect_white_dsc;

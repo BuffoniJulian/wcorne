@@ -22,9 +22,12 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "battery.h"
 #include "layer.h"
 #include "output.h"
+#include "pomodoro.h"
 #include "profile_viewer.h"
 #include "screen.h"
 #include "screen_selector.h"
+
+#define NUM_SCREENS 3
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 static int current_screen = 0;
@@ -52,22 +55,28 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     // Always redraw the canvas background first
     fill_background(canvas);
     
-    if (current_screen == 0) {
+    // Hide gem container by default
+    if (gem_container != NULL) {
+        lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
+    }
+    
+    switch (current_screen) {
+    case 0:
         // Screen 1: Profile viewer
         draw_profile_viewer_status(canvas, state);
-        
-        // Hide gem container
-        if (gem_container != NULL) {
-            lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
-            lv_obj_invalidate(gem_container);
-        }
-    } else {
-        // Screen 2: Gem animation
-        // Show gem container
+        break;
+    case 1:
+        // Screen 2: Pomodoro timer
+        pomodoro_tick();  // Update timer
+        draw_pomodoro(canvas);
+        break;
+    case 2:
+        // Screen 3: Gem animation
         if (gem_container != NULL) {
             lv_obj_clear_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
             lv_obj_invalidate(gem_container);
         }
+        break;
     }
     
     rotate_canvas(canvas, cbuf);
@@ -233,7 +242,7 @@ ZMK_SUBSCRIPTION(widget_activity_status, zmk_activity_state_changed);
  **/
 
 void zmk_widget_screen_cycle(void) {
-    current_screen = (current_screen + 1) % 2;
+    current_screen = (current_screen + 1) % NUM_SCREENS;
     struct zmk_widget_screen *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
         draw_middle(widget->obj, widget->cbuf2, &widget->state);
@@ -280,6 +289,7 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     widget_battery_status_init();
     widget_layer_status_init();
     widget_output_status_init();
+    pomodoro_init();
 
     // Initial draw of all sections
     draw_top(widget->obj, widget->cbuf, &widget->state);

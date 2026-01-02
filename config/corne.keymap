@@ -120,7 +120,7 @@
             #binding-cells = <0>;
             bindings = <&mo 1>, <&to 4>;
 
-            tapping-term-ms = <100>;
+            tapping-term-ms = <200>;
         };
 
         mo_layer2: mo_layer2 {
@@ -129,7 +129,7 @@
             #binding-cells = <0>;
             bindings = <&mo 2>, <&to 5>;
 
-            tapping-term-ms = <100>;
+            tapping-term-ms = <200>;
         };
 
         up_arrow: up_arrow {
@@ -138,7 +138,7 @@
             #binding-cells = <0>;
             bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
 
-            tapping-term-ms = <100>;
+            tapping-term-ms = <200>;
         };
 
         left_arrow: left_arrow {
@@ -147,7 +147,7 @@
             #binding-cells = <0>;
             bindings = <&kp PERIOD>, <&kp LEFT>;
 
-            tapping-term-ms = <100>;
+            tapping-term-ms = <200>;
         };
 
         right_arrow: right_arrow {
@@ -156,7 +156,7 @@
             #binding-cells = <0>;
             bindings = <&kp BACKSLASH>, <&kp RIGHT>;
 
-            tapping-term-ms = <100>;
+            tapping-term-ms = <200>;
         };
 
         down_arrow: down_arrow {
@@ -165,7 +165,7 @@
             #binding-cells = <0>;
             bindings = <&kp SLASH>, <&kp DOWN_ARROW>;
 
-            tapping-term-ms = <100>;
+            tapping-term-ms = <200>;
         };
 
         scr_cyc: screen_cycle {
@@ -177,6 +177,30 @@
         anim_tog: anim_toggle {
             compatible = "zmk,behavior-anim-toggle";
             label = "ANIM_TOGGLE";
+            #binding-cells = <0>;
+        };
+
+        pom_ss: pom_start_stop {
+            compatible = "zmk,behavior-pom-start-stop";
+            label = "POM_START_STOP";
+            #binding-cells = <0>;
+        };
+
+        pom_rst: pom_reset {
+            compatible = "zmk,behavior-pom-reset";
+            label = "POM_RESET";
+            #binding-cells = <0>;
+        };
+
+        pom_add: pom_add_time {
+            compatible = "zmk,behavior-pom-add-time";
+            label = "POM_ADD_TIME";
+            #binding-cells = <0>;
+        };
+
+        pom_sub: pom_sub_time {
+            compatible = "zmk,behavior-pom-sub-time";
+            label = "POM_SUB_TIME";
             #binding-cells = <0>;
         };
 
@@ -203,9 +227,9 @@
 
         default_layer {
             bindings = <
-&kp TAB         &kp Q  &kp W  &kp E     &kp R       &kp T        &kp Y    &kp U       &kp I      &kp O        &kp P        &kp BSPC
-&kp LEFT_SHIFT  &kp A  &kp S  &kp D     &kp F       &kp G        &kp H    &kp J       &kp K      &kp L        &up_arrow    &kp ESCAPE
-&kp LCTRL       &kp Z  &kp X  &kp C     &kp V       &kp B        &kp N    &kp M       &kp COMMA  &left_arrow  &down_arrow  &right_arrow
+&kp TAB         &kp Q  &kp W  &kp E     &kp R       &kp T        &kp Y    &kp U       &kp I      &kp O        &kp P            &kp BSPC
+&kp LEFT_SHIFT  &kp A  &kp S  &kp D     &kp F       &kp G        &kp H    &kp J       &kp K      &kp L        &kp SEMICOLON    &kp ESCAPE
+&kp LCTRL       &kp Z  &kp X  &kp C     &kp V       &kp B        &kp N    &kp M       &kp COMMA  &kp PERIOD   &kp SLASH        &kp BACKSLASH
                               &kp LALT  &mo_layer2  &kp SPACE    &kp RET  &mo_layer1  &kp LWIN
             >;
         };
@@ -238,11 +262,12 @@
         };
 
         LAYER_4 {
+            // Navigation + Pomodoro controls
             bindings = <
-&kp TAB     &none  &none  &none         &none   &none        &none      &none   &none          &none           &none           &kp BACKSPACE
-&kp LSHIFT  &none  &none  &none         &none   &none        &none      &none   &kp PAGE_DOWN  &kp PAGE_UP     &kp UP_ARROW    &kp ESCAPE
-&kp LCTRL   &none  &none  &none         &none   &none        &none      &none   &none          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
-                          &kp LEFT_ALT  &trans  &kp SPACE    &kp ENTER  &trans  &kp LWIN
+&kp TAB     &none    &none    &none         &none     &none        &pom_sub   &pom_add  &none          &none           &none           &kp BACKSPACE
+&kp LSHIFT  &none    &none    &none         &none     &none        &pom_ss    &pom_rst  &kp PAGE_DOWN  &kp PAGE_UP     &kp UP_ARROW    &kp ESCAPE
+&kp LCTRL   &none    &none    &none         &none     &none        &none      &none     &none          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
+                              &kp LEFT_ALT  &trans    &kp SPACE    &kp ENTER  &trans    &kp LWIN
             >;
         };
 
