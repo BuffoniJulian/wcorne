@@ -69,6 +69,42 @@
             #binding-cells = <0>;
             bindings = <&kp J &kp U &kp L &kp I &kp A &kp N>;
         };
+
+        a_acute: a_acute {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp SQT &kp A>;
+        };
+
+        e_acute: e_acute {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp SQT &kp E>;
+        };
+
+        i_acute: i_acute {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp SQT &kp I>;
+        };
+
+        o_acute: o_acute {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp SQT &kp O>;
+        };
+
+        u_acute: u_acute {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp SQT &kp U>;
+        };
+
+        enye: enye {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LSHIFT &kp GRAVE &kp N>;
+        };
     };
 
     behaviors {
