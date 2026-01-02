@@ -1,0 +1,5 @@
+description: Animation toggle behavior for nice_view_gem
+
+compatible: "zmk,behavior-anim-toggle"
+
+include: zero_param.yaml

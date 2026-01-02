@@ -72,3 +72,17 @@ void resume_animation(void) {
     }
 #endif
 }
+
+void toggle_animation(void) {
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
+    if (anim_running) {
+        stop_animation();
+    } else {
+        resume_animation();
+    }
+#endif
+}
+
+bool is_animation_running(void) {
+    return anim_running;
+}

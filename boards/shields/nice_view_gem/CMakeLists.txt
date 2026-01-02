@@ -8,6 +8,7 @@ if(CONFIG_ZMK_DISPLAY AND CONFIG_NICE_VIEW_WIDGET_STATUS)
   zephyr_library_sources(widgets/util.c)
   zephyr_library_sources(widgets/animation.c)
   zephyr_library_sources(widgets/behavior_screen_cycle.c)
+  zephyr_library_sources(widgets/behavior_anim_toggle.c)
   
   if(NOT CONFIG_ZMK_SPLIT OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     zephyr_library_sources(widgets/layer.c)

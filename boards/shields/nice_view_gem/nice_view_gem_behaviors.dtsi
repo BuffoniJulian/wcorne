@@ -5,6 +5,11 @@
             label = "SCREEN_CYCLE";
             #binding-cells = <0>;
         };
+        anim_tog: anim_toggle {
+            compatible = "zmk,behavior-anim-toggle";
+            label = "ANIM_TOGGLE";
+            #binding-cells = <0>;
+        };
     };
 };
 
