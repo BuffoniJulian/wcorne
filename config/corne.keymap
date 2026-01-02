@@ -138,7 +138,7 @@
             #binding-cells = <0>;
             bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
 
-            tapping-term-ms = <200>;
+            tapping-term-ms = <100>;
         };
 
         left_arrow: left_arrow {
@@ -147,7 +147,7 @@
             #binding-cells = <0>;
             bindings = <&kp PERIOD>, <&kp LEFT>;
 
-            tapping-term-ms = <200>;
+            tapping-term-ms = <100>;
         };
 
         right_arrow: right_arrow {
@@ -156,7 +156,7 @@
             #binding-cells = <0>;
             bindings = <&kp BACKSLASH>, <&kp RIGHT>;
 
-            tapping-term-ms = <200>;
+            tapping-term-ms = <100>;
         };
 
         down_arrow: down_arrow {
@@ -165,7 +165,7 @@
             #binding-cells = <0>;
             bindings = <&kp SLASH>, <&kp DOWN_ARROW>;
 
-            tapping-term-ms = <200>;
+            tapping-term-ms = <100>;
         };
 
         scr_cyc: screen_cycle {
