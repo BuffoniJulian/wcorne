@@ -225,8 +225,8 @@
         LAYER_3 {
             bindings = <
 &kp F1        &kp F2  &kp F3      &kp F4        &kp F5      &kp F6            &kp F7             &kp F8      &kp F9    &kp F10         &kp F11         &kp F12
-&kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &none              &kp DELETE  &none     &none           &kp UP_ARROW    &kp ESCAPE
-&none         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc    &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
+&kp LSHIFT  &kp CAPSLOCK   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &none              &kp DELETE  &none     &none           &kp UP_ARROW    &kp ESCAPE
+&kp LCTRL         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc    &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
                                   &kp LEFT_ALT  &trans      &kp SPACE         &kp ENTER          &trans      &kp LWIN
             >;
         };
