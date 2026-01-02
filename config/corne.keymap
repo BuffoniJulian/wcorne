@@ -1,8 +1,8 @@
+#include <dt-bindings/zmk/kscan_mock.h>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/kscan_mock.h>
 #include <dt-bindings/zmk/pointing.h>
 
 / {
@@ -31,35 +31,41 @@
             key-positions = <36 37 40 41>;
             layers = <6>;
         };
-        
+
         lalt_a_acute {
             bindings = <&a_acute>;
             key-positions = < /* LALT */ 36  /* A */ 13 >;
+            layers = <0>;
         };
 
         lalt_e_acute {
             bindings = <&e_acute>;
-            key-positions = <36 15>;
+            key-positions = <36 3>;
+            layers = <0>;
         };
 
         lalt_i_acute {
             bindings = <&i_acute>;
-            key-positions = <36 18>;
+            key-positions = <36 8>;
+            layers = <0>;
         };
 
         lalt_o_acute {
             bindings = <&o_acute>;
-            key-positions = <36 19>;
+            key-positions = <36 9>;
+            layers = <0>;
         };
 
         lalt_u_acute {
             bindings = <&u_acute>;
-            key-positions = <36 16>;
+            key-positions = <36 7>;
+            layers = <0>;
         };
 
         lalt_enye {
             bindings = <&enye>;
-            key-positions = <36 26>;
+            key-positions = <36 30>;
+            layers = <0>;
         };
     };
 
@@ -113,6 +119,7 @@
             label = "MO_LAYER1";
             #binding-cells = <0>;
             bindings = <&mo 1>, <&to 4>;
+
             tapping-term-ms = <300>;
         };
 
@@ -121,6 +128,7 @@
             label = "MO_LAYER2";
             #binding-cells = <0>;
             bindings = <&mo 2>, <&to 5>;
+
             tapping-term-ms = <300>;
         };
 
@@ -176,12 +184,12 @@
             compatible = "zmk,behavior-leader-key";
             #binding-cells = <0>;
             ignore-keys = <LSHFT RSHFT>;
-            email_expansion {
-                    sequence = <E M A I L>;
-                    bindings = <&emaill>;
-                };
-        };
 
+            email_expansion {
+                sequence = <E M A I L>;
+                bindings = <&emaill>;
+            };
+        };
     };
 
     keymap {
@@ -189,9 +197,9 @@
 
         default_layer {
             bindings = <
-&kp TAB         &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U  &kp I      &kp O        &kp P        &kp BSPC
-&kp LEFT_SHIFT  &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J  &kp K      &kp L        &up_arrow    &kp ESCAPE
-&kp LCTRL       &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M  &kp COMMA  &left_arrow  &down_arrow  &right_arrow
+&kp TAB         &kp Q  &kp W  &kp E     &kp R       &kp T        &kp Y    &kp U       &kp I      &kp O        &kp P        &kp BSPC
+&kp LEFT_SHIFT  &kp A  &kp S  &kp D     &kp F       &kp G        &kp H    &kp J       &kp K      &kp L        &up_arrow    &kp ESCAPE
+&kp LCTRL       &kp Z  &kp X  &kp C     &kp V       &kp B        &kp N    &kp M       &kp COMMA  &left_arrow  &down_arrow  &right_arrow
                               &kp LALT  &mo_layer2  &kp SPACE    &kp RET  &mo_layer1  &kp LWIN
             >;
         };
@@ -216,28 +224,28 @@
 
         LAYER_3 {
             bindings = <
-&kp F1        &kp F2  &kp F3      &kp F4        &kp F5      &kp F6            &kp F7             &kp F8    &kp F9    &kp F10         &kp F11         &kp F12
-&kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &none              &kp DELETE     &none     &none           &kp UP_ARROW    &kp ESCAPE
-&none         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc  &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
-                                  &kp LEFT_ALT  &trans      &kp SPACE         &kp ENTER          &trans    &kp LWIN
+&kp F1        &kp F2  &kp F3      &kp F4        &kp F5      &kp F6            &kp F7             &kp F8      &kp F9    &kp F10         &kp F11         &kp F12
+&kp CAPSLOCK  &none   &bt BT_CLR  &bt BT_PRV    &bt BT_NXT  &bt BT_CLR_ALL    &none              &kp DELETE  &none     &none           &kp UP_ARROW    &kp ESCAPE
+&none         &none   &none       &none         &none       &none             &ext_power EP_TOG  &scr_cyc    &none     &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
+                                  &kp LEFT_ALT  &trans      &kp SPACE         &kp ENTER          &trans      &kp LWIN
             >;
         };
 
         LAYER_4 {
             bindings = <
-&kp TAB     &none  &none  &none  &none  &none    &none      &none      &none          &none           &none           &kp BACKSPACE
-&kp LSHIFT  &none  &none  &none  &none  &none    &none      &none      &kp PAGE_DOWN  &kp PAGE_UP     &kp UP_ARROW    &kp ESCAPE
-&kp LCTRL   &none  &none  &none  &none  &none    &none      &none      &none          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
-                          &kp LEFT_ALT  &trans   &kp SPACE  &kp ENTER  &trans         &kp LWIN
+&kp TAB     &none  &none  &none         &none   &none        &none      &none   &none          &none           &none           &kp BACKSPACE
+&kp LSHIFT  &none  &none  &none         &none   &none        &none      &none   &kp PAGE_DOWN  &kp PAGE_UP     &kp UP_ARROW    &kp ESCAPE
+&kp LCTRL   &none  &none  &none         &none   &none        &none      &none   &none          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
+                          &kp LEFT_ALT  &trans  &kp SPACE    &kp ENTER  &trans  &kp LWIN
             >;
         };
 
         LAYER_5 {
             bindings = <
-&kp TAB     &none  &none  &none         &none    &none      &none      &none   &none  &msc SCRL_DOWN  &none           &msc SCRL_UP
-&kp LSHIFT  &none  &none  &none         &none    &none      &none      &none   &none  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK
-&kp LCTRL   &none  &none  &none         &none    &none      &none      &none   &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT
-                          &kp LEFT_ALT  &trans   &kp SPACE  &kp ENTER  &trans  &kp LWIN
+&kp TAB     &none  &none  &none         &none   &none        &none      &none   &none     &msc SCRL_DOWN  &none           &msc SCRL_UP
+&kp LSHIFT  &none  &none  &none         &none   &none        &none      &none   &none     &mkp LCLK       &mmv MOVE_UP    &mkp RCLK
+&kp LCTRL   &none  &none  &none         &none   &none        &none      &none   &none     &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT
+                          &kp LEFT_ALT  &trans  &kp SPACE    &kp ENTER  &trans  &kp LWIN
             >;
         };
 
