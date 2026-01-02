@@ -17,6 +17,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
 #include "pomodoro.h"
+#include "screen.h"
 #endif
 
 static int behavior_pom_reset_init(const struct device *dev) { return 0; }
@@ -25,6 +26,7 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
                                       struct zmk_behavior_binding_event event) {
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     pomodoro_reset();
+    zmk_widget_screen_refresh();
 #endif
     return ZMK_BEHAVIOR_OPAQUE;
 }

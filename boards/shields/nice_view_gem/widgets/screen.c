@@ -213,6 +213,16 @@ void zmk_widget_screen_cycle(void) {
     }
 }
 
+void zmk_widget_screen_refresh(void) {
+    struct zmk_widget_screen *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        draw_middle(widget->obj, widget->cbuf2, &widget->state);
+        // Force LVGL to refresh
+        lv_obj_t *middle_canvas = lv_obj_get_child(widget->obj, 1);
+        lv_obj_invalidate(middle_canvas);
+    }
+}
+
 /**
  * Initialization
  **/
