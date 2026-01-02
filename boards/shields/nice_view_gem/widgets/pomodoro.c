@@ -6,6 +6,7 @@
 #include <zephyr/kernel.h>
 #include <math.h>
 #include "pomodoro.h"
+#include "screen.h"
 
 // Default durations in seconds (configurable via Kconfig)
 #ifndef CONFIG_NICE_VIEW_GEM_POMODORO_WORK_DURATION
@@ -41,6 +42,30 @@ static struct pomodoro_data pom_data = {
 
 static int64_t last_tick_time = 0;
 
+// Periodic timer for display updates
+static void pomodoro_timer_handler(struct k_work *work);
+static void pomodoro_timer_expiry(struct k_timer *timer);
+
+K_WORK_DEFINE(pomodoro_work, pomodoro_timer_handler);
+K_TIMER_DEFINE(pomodoro_timer, pomodoro_timer_expiry, NULL);
+
+static void pomodoro_timer_handler(struct k_work *work) {
+    pomodoro_tick();
+    zmk_widget_screen_refresh();
+}
+
+static void pomodoro_timer_expiry(struct k_timer *timer) {
+    k_work_submit(&pomodoro_work);
+}
+
+static void start_pomodoro_timer(void) {
+    k_timer_start(&pomodoro_timer, K_SECONDS(1), K_SECONDS(1));
+}
+
+static void stop_pomodoro_timer(void) {
+    k_timer_stop(&pomodoro_timer);
+}
+
 // Circle drawing constants
 #define OUTER_RADIUS 28
 #define MAX_INNER_RADIUS 24
@@ -61,8 +86,9 @@ void pomodoro_start_stop(void) {
         // Start work session
         pom_data.state = POM_RUNNING_WORK;
         pom_data.elapsed_seconds = 0;
-        pom_data.session_duration = WORK_DURATION_SEC;
+        // Keep user-configured duration, don't reset to default
         last_tick_time = k_uptime_get();
+        start_pomodoro_timer();
         break;
     case POM_RUNNING_WORK:
     case POM_RUNNING_SHORT_BREAK:
@@ -70,16 +96,19 @@ void pomodoro_start_stop(void) {
         // Pause
         pom_data.paused_from = pom_data.state;
         pom_data.state = POM_PAUSED;
+        stop_pomodoro_timer();
         break;
     case POM_PAUSED:
         // Resume
         pom_data.state = pom_data.paused_from;
         last_tick_time = k_uptime_get();
+        start_pomodoro_timer();
         break;
     }
 }
 
 void pomodoro_reset(void) {
+    stop_pomodoro_timer();
     pom_data.state = POM_IDLE;
     pom_data.elapsed_seconds = 0;
     pom_data.session_duration = WORK_DURATION_SEC;
