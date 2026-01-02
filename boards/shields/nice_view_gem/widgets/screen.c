@@ -4,13 +4,11 @@
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #include <zmk/event_manager.h>
-#include <zmk/events/activity_state_changed.h>
 #include <zmk/events/battery_state_changed.h>
 #include <zmk/events/ble_active_profile_changed.h>
 #include <zmk/events/endpoint_changed.h>
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/events/usb_conn_state_changed.h>
-#include <zmk/activity.h>
 #include <zmk/battery.h>
 #include <zmk/ble.h>
 #include <zmk/display.h>
@@ -18,7 +16,6 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/keymap.h>
 #include <zmk/usb.h>
 
-#include "animation.h"
 #include "battery.h"
 #include "layer.h"
 #include "output.h"
@@ -27,11 +24,10 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "screen.h"
 #include "screen_selector.h"
 
-#define NUM_SCREENS 3
+#define NUM_SCREENS 2
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 static int current_screen = 0;
-static lv_obj_t *gem_container = NULL;
 
 /**
  * Draw buffers
@@ -55,11 +51,6 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     // Always redraw the canvas background first
     fill_background(canvas);
     
-    // Hide gem container by default
-    if (gem_container != NULL) {
-        lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
-    }
-    
     switch (current_screen) {
     case 0:
         // Screen 1: Profile viewer
@@ -69,13 +60,6 @@ static void draw_middle(lv_obj_t *widget, lv_color_t cbuf[], const struct status
         // Screen 2: Pomodoro timer
         pomodoro_tick();  // Update timer
         draw_pomodoro(canvas);
-        break;
-    case 2:
-        // Screen 3: Gem animation
-        if (gem_container != NULL) {
-            lv_obj_clear_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
-            lv_obj_invalidate(gem_container);
-        }
         break;
     }
     
@@ -212,32 +196,6 @@ ZMK_SUBSCRIPTION(widget_output_status, zmk_ble_active_profile_changed);
 #endif
 
 /**
- * Activity state - stop animation on idle to allow sleep
- **/
-
-static int activity_state_listener(const zmk_event_t *eh) {
-    const struct zmk_activity_state_changed *ev = as_zmk_activity_state_changed(eh);
-    if (ev == NULL) {
-        return ZMK_EV_EVENT_BUBBLE;
-    }
-
-    switch (ev->state) {
-    case ZMK_ACTIVITY_ACTIVE:
-        resume_animation();
-        break;
-    case ZMK_ACTIVITY_IDLE:
-    case ZMK_ACTIVITY_SLEEP:
-        stop_animation();
-        break;
-    }
-
-    return ZMK_EV_EVENT_BUBBLE;
-}
-
-ZMK_LISTENER(widget_activity_status, activity_state_listener);
-ZMK_SUBSCRIPTION(widget_activity_status, zmk_activity_state_changed);
-
-/**
  * Screen cycling
  **/
 
@@ -274,16 +232,6 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     lv_obj_t *bottom = lv_canvas_create(widget->obj);
     lv_obj_align(bottom, LV_ALIGN_TOP_LEFT, -22, 0);  // Layer + screen dots area
     lv_canvas_set_buffer(bottom, widget->cbuf3, BUFFER_SIZE, BUFFER_SIZE, LV_IMG_CF_TRUE_COLOR);
-
-    // Create gem animation container for screen 2 (hidden by default)
-    gem_container = lv_obj_create(widget->obj);
-    lv_obj_set_size(gem_container, 68, 68);
-    lv_obj_set_style_bg_opa(gem_container, LV_OBJ_FLAG_HIDDEN, 0);
-    lv_obj_set_style_border_width(gem_container, 0, 0);
-    lv_obj_set_style_pad_all(gem_container, 0, 0);
-    lv_obj_align(gem_container, LV_ALIGN_TOP_LEFT, 46, 0);  // Same as middle canvas
-    draw_animation(gem_container);
-    lv_obj_add_flag(gem_container, LV_OBJ_FLAG_HIDDEN);
 
     sys_slist_append(&widgets, &widget->node);
     widget_battery_status_init();
