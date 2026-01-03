@@ -75,10 +75,14 @@ void pomodoro_init(void) {
 void pomodoro_start_stop(void) {
     switch (pom_data.state) {
     case POM_IDLE:
-        // Start work session
+        // Move to break setup (work time is configured)
+        pom_data.state = POM_SETUP_BREAK;
+        break;
+    case POM_SETUP_BREAK:
+        // Start work session (break time is now configured too)
         pom_data.state = POM_RUNNING_WORK;
         pom_data.elapsed_seconds = 0;
-        // Keep user-configured duration, don't reset to default
+        pom_data.session_duration = pom_data.work_duration;
         last_tick_time = k_uptime_get();
         start_pomodoro_timer();
         break;
@@ -107,33 +111,34 @@ void pomodoro_reset(void) {
     pom_data.session_duration = pom_data.work_duration;
 }
 
-// Toggle between editing work time and break time when IDLE
-// Add time increases current displayed duration
+// Context-aware time adjustment:
+// - IDLE: adjust work duration
+// - SETUP_BREAK or during break: adjust break duration
 void pomodoro_add_time(void) {
-    if (pom_data.state == POM_IDLE) {
-        // Increase work duration
+    if (pom_data.state == POM_SETUP_BREAK ||
+        pom_data.state == POM_RUNNING_BREAK || 
+        (pom_data.state == POM_PAUSED && pom_data.paused_from == POM_RUNNING_BREAK)) {
+        // Setup break or during break: adjust break duration
+        pom_data.break_duration += 60;  // Add 1 minute
+    } else if (pom_data.state == POM_IDLE) {
+        // IDLE: adjust work duration
         pom_data.work_duration += 300;  // Add 5 minutes
         pom_data.session_duration = pom_data.work_duration;
     }
 }
 
 void pomodoro_sub_time(void) {
-    if (pom_data.state == POM_IDLE && pom_data.work_duration > 300) {
-        // Decrease work duration (min 5 min)
-        pom_data.work_duration -= 300;
+    if (pom_data.state == POM_SETUP_BREAK ||
+        pom_data.state == POM_RUNNING_BREAK || 
+        (pom_data.state == POM_PAUSED && pom_data.paused_from == POM_RUNNING_BREAK)) {
+        // Setup break or during break: adjust break duration
+        if (pom_data.break_duration > 60) {
+            pom_data.break_duration -= 60;  // Sub 1 minute (min 1 min)
+        }
+    } else if (pom_data.state == POM_IDLE && pom_data.work_duration > 300) {
+        // IDLE: adjust work duration
+        pom_data.work_duration -= 300;  // Sub 5 minutes (min 5 min)
         pom_data.session_duration = pom_data.work_duration;
-    }
-}
-
-void pomodoro_add_break_time(void) {
-    if (pom_data.state == POM_IDLE) {
-        pom_data.break_duration += 60;  // Add 1 minute to break
-    }
-}
-
-void pomodoro_sub_break_time(void) {
-    if (pom_data.state == POM_IDLE && pom_data.break_duration > 60) {
-        pom_data.break_duration -= 60;  // Sub 1 minute from break (min 1 min)
     }
 }
 
@@ -268,10 +273,14 @@ void draw_pomodoro(lv_obj_t *canvas) {
     char time_str[16];
     
     if (pom_data.state == POM_IDLE) {
-        // In IDLE, show work time / break time
+        // In IDLE, show work time being configured
         uint32_t work_min = pom_data.work_duration / 60;
+        snprintf(time_str, sizeof(time_str), "%02u:00", work_min);
+        lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
+    } else if (pom_data.state == POM_SETUP_BREAK) {
+        // In SETUP_BREAK, show break time being configured
         uint32_t break_min = pom_data.break_duration / 60;
-        snprintf(time_str, sizeof(time_str), "%02u/%02u", work_min, break_min);
+        snprintf(time_str, sizeof(time_str), "%02u:00", break_min);
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
     } else {
         // When running, show remaining time
@@ -303,7 +312,10 @@ void draw_pomodoro(lv_obj_t *canvas) {
     const char *state_str;
     switch (pom_data.state) {
     case POM_IDLE:
-        state_str = "IDLE";
+        state_str = "WORK";  // Configuring work time
+        break;
+    case POM_SETUP_BREAK:
+        state_str = "BREAK"; // Configuring break time
         break;
     case POM_RUNNING_WORK:
         state_str = "WORK";

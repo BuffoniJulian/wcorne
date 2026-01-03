@@ -30,16 +30,6 @@
             label = "POM_SUB_TIME";
             #binding-cells = <0>;
         };
-        pom_badd: pom_add_break {
-            compatible = "zmk,behavior-pom-add-break";
-            label = "POM_ADD_BREAK";
-            #binding-cells = <0>;
-        };
-        pom_bsub: pom_sub_break {
-            compatible = "zmk,behavior-pom-sub-break";
-            label = "POM_SUB_BREAK";
-            #binding-cells = <0>;
-        };
     };
 };
 

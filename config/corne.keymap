@@ -268,10 +268,10 @@
         };
 
         LAYER_4 {
-            // Navigation + Pomodoro controls
+            // Navigation + Pomodoro controls (add/sub auto-switch: work in IDLE, break during break)
 
             bindings = <
-&kp TAB     &none  &none  &none         &none   &none        &pom_sub   &pom_add  &pom_bsub      &pom_badd       &none           &kp BACKSPACE
+&kp TAB     &none  &none  &none         &none   &none        &pom_sub   &pom_add  &none          &none           &none           &kp BACKSPACE
 &kp LSHIFT  &none  &none  &none         &none   &none        &pom_ss    &pom_rst  &kp PAGE_DOWN  &kp PAGE_UP     &kp UP_ARROW    &kp ESCAPE
 &kp LCTRL   &none  &none  &none         &none   &none        &none      &none     &none          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW
                           &kp LEFT_ALT  &trans  &kp SPACE    &kp ENTER  &trans    &kp LWIN

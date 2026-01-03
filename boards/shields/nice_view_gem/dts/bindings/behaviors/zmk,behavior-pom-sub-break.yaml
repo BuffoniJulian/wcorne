@@ -1,5 +1,0 @@
-description: Pomodoro subtract break time behavior
-
-compatible: "zmk,behavior-pom-sub-break"
-
-include: zero_param.yaml

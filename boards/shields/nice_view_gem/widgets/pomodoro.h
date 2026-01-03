@@ -10,7 +10,8 @@
 
 // Pomodoro states
 enum pomodoro_state {
-    POM_IDLE,
+    POM_IDLE,           // Configure work time
+    POM_SETUP_BREAK,    // Configure break time (after first START press)
     POM_RUNNING_WORK,
     POM_RUNNING_BREAK,
     POM_PAUSED
@@ -29,10 +30,8 @@ struct pomodoro_data {
 // Control functions
 void pomodoro_start_stop(void);
 void pomodoro_reset(void);
-void pomodoro_add_time(void);       // Add 5 min to work time (when IDLE)
-void pomodoro_sub_time(void);       // Sub 5 min from work time (when IDLE)
-void pomodoro_add_break_time(void); // Add 1 min to break time (when IDLE)
-void pomodoro_sub_break_time(void); // Sub 1 min from break time (when IDLE)
+void pomodoro_add_time(void);  // Context-aware: work (IDLE) or break (SETUP_BREAK/during break)
+void pomodoro_sub_time(void);  // Context-aware: work (IDLE) or break (SETUP_BREAK/during break)
 
 // State getters
 enum pomodoro_state pomodoro_get_state(void);

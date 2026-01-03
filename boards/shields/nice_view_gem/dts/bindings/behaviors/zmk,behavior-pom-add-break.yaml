@@ -1,5 +1,0 @@
-description: Pomodoro add break time behavior
-
-compatible: "zmk,behavior-pom-add-break"
-
-include: zero_param.yaml

@@ -13,8 +13,6 @@ if(CONFIG_ZMK_DISPLAY AND CONFIG_NICE_VIEW_WIDGET_STATUS)
   zephyr_library_sources(widgets/behavior_pom_reset.c)
   zephyr_library_sources(widgets/behavior_pom_add_time.c)
   zephyr_library_sources(widgets/behavior_pom_sub_time.c)
-  zephyr_library_sources(widgets/behavior_pom_add_break.c)
-  zephyr_library_sources(widgets/behavior_pom_sub_break.c)
   
   if(NOT CONFIG_ZMK_SPLIT OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     zephyr_library_sources(widgets/layer.c)
