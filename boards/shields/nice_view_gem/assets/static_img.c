@@ -5,11 +5,11 @@
  * 1. Go to https://javl.github.io/image2cpp/
  * 2. Upload your image (68x124 pixels, black & white PNG - PORTRAIT as seen on display)
  * 3. Settings:
- *    - Canvas size: 68 x 124
+ *    - Canvas size: 124 x 68
  *    - Rotate image: 90 degrees
  *    - Code output format: Plain bytes
  *    - Draw mode: Horizontal - 1 bit per pixel
- * 4. Click "Generate code" -> outputs 124x68 (16 bytes/row × 68 rows)
+ * 4. Click "Generate code"
  * 5. Copy all the bytes and paste below (after the color palette)
  * 6. Set CONFIG_NICE_VIEW_GEM_ANIMATION=n in corne.conf
  * 7. Rebuild and flash
@@ -20,16 +20,11 @@
 #include <lvgl.h>
 
 /* ============================================================================
- * Image dimensions after 90° rotation: 124 wide x 68 tall
- * (Create your image at 68x124 portrait, rotate 90° in image2cpp)
+ * DO NOT EDIT BELOW THIS LINE
  * ============================================================================ */
 
 #define STATIC_IMG_WIDTH  124
 #define STATIC_IMG_HEIGHT 68
-
-/* ============================================================================
- * DO NOT EDIT BELOW THIS LINE
- * ============================================================================ */
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
 #define LV_ATTRIBUTE_MEM_ALIGN
