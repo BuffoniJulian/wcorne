@@ -52,12 +52,12 @@ void draw_animation(lv_obj_t *canvas) {
     lv_img_set_src(art, &static_img);
     anim_obj = art;
     anim_running = false;
-    /* Position below top status bar (36px for battery/signal) */
-    lv_obj_align(art, LV_ALIGN_TOP_LEFT, 36, 0);
+    /* Position below top status bar: X=0, Y=36 (36px down for battery/signal area) */
+    lv_obj_align(art, LV_ALIGN_TOP_LEFT, 0, 36);
     return;
 #endif
 
-    /* Animation uses original smaller positioning */
+    /* Animation uses original positioning (36px from left edge) */
     lv_obj_align(art, LV_ALIGN_TOP_LEFT, 36, 0);
 }
 
