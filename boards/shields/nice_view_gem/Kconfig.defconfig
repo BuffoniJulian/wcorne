@@ -52,13 +52,31 @@ config NICE_VIEW_GEM_POMODORO_BREAK_DURATION
     int "Pomodoro break duration in minutes"
     default 5
 
-config NICE_VIEW_GEM_POMODORO_LIVE_CLOCK
-    bool "Update pomodoro clock every second (uses more battery)"
-    default n
+choice NICE_VIEW_GEM_POMODORO_DISPLAY_MODE
+    prompt "Pomodoro display mode"
+    default NICE_VIEW_GEM_POMODORO_MODE_CLOCK_ONLY
     help
-      When enabled, the clock updates every second.
-      When disabled (default), the clock only updates every 5 minutes
-      and when switching between work/break to save battery.
+      Select how the pomodoro timer updates the display.
+
+config NICE_VIEW_GEM_POMODORO_MODE_LIVE
+    bool "Live: Clock + numbers update every second"
+    help
+      Full display with time numbers, updates every second.
+      Uses the most battery.
+
+config NICE_VIEW_GEM_POMODORO_MODE_INTERVAL
+    bool "Interval: Clock + numbers update every 5%"
+    help
+      Full display with time numbers, updates every 5% progress.
+      Balanced battery usage.
+
+config NICE_VIEW_GEM_POMODORO_MODE_CLOCK_ONLY
+    bool "Clock only: Just pie chart, updates every 5%"
+    help
+      Only shows the pie chart progress, no time numbers while running.
+      Best battery life.
+
+endchoice
 
 config NICE_VIEW_WIDGET_STATUS
     select LV_USE_LABEL

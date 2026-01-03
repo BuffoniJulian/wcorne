@@ -48,11 +48,11 @@ static void pomodoro_timer_handler(struct k_work *work) {
     enum pomodoro_state prev_state = pom_data.state;
     pomodoro_tick();
     
-#ifdef CONFIG_NICE_VIEW_GEM_POMODORO_LIVE_CLOCK
-    // Live clock mode: update every second
+#ifdef CONFIG_NICE_VIEW_GEM_POMODORO_MODE_LIVE
+    // Live mode: update every second
     zmk_widget_screen_refresh();
 #else
-    // Battery saving mode: only update every 5% or on state change
+    // Interval or Clock-only mode: only update every 5% or on state change
     bool state_changed = (prev_state != pom_data.state);
     
     // Calculate current progress percentage (0-100)
@@ -301,22 +301,25 @@ void draw_pomodoro(lv_obj_t *canvas) {
     char time_str[16];
     
     if (pom_data.state == POM_IDLE) {
-        // In IDLE, show work time being configured
+        // In IDLE, always show work time being configured
         uint32_t work_min = pom_data.work_duration / 60;
         snprintf(time_str, sizeof(time_str), "%02u:00", work_min);
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
     } else if (pom_data.state == POM_SETUP_BREAK) {
-        // In SETUP_BREAK, show break time being configured
+        // In SETUP_BREAK, always show break time being configured
         uint32_t break_min = pom_data.break_duration / 60;
         snprintf(time_str, sizeof(time_str), "%02u:00", break_min);
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
     } else {
-        // When running, show remaining time (MM:SS)
+#ifndef CONFIG_NICE_VIEW_GEM_POMODORO_MODE_CLOCK_ONLY
+        // Show remaining time (MM:SS) in Live and Interval modes
         uint32_t remaining = pomodoro_get_remaining_seconds();
         uint32_t minutes = remaining / 60;
         uint32_t seconds = remaining % 60;
         snprintf(time_str, sizeof(time_str), "%u:%02u", minutes, seconds);
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
+#endif
+        // Clock-only mode: no time display while running
     }
 
     // Draw outer circle outline (moved down to make room for bigger text)
