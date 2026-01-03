@@ -47,13 +47,17 @@ void draw_animation(lv_obj_t *canvas) {
     anim_obj = art;
     anim_running = true;
 #else
-    /* Static image mode */
+    /* Static image mode - larger image covering middle + bottom areas */
     lv_obj_t *art = lv_img_create(canvas);
     lv_img_set_src(art, &static_img);
     anim_obj = art;
     anim_running = false;
+    /* Position below top status bar (36px for battery/signal) */
+    lv_obj_align(art, LV_ALIGN_TOP_LEFT, 36, 0);
+    return;
 #endif
 
+    /* Animation uses original smaller positioning */
     lv_obj_align(art, LV_ALIGN_TOP_LEFT, 36, 0);
 }
 

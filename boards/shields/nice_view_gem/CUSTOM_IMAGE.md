@@ -1,48 +1,63 @@
 # Custom Static Image for Right Display
 
 Replace the gem animation with your own static image on the peripheral (right) display.
+The image covers the middle and bottom areas, leaving only the top bar (battery/signal) unchanged.
 
 ## Quick Start
 
 ### Step 1: Convert Your Image
 
-1. Prepare a **black & white PNG** image (max **69×68 pixels**)
-2. Go to [LVGL Image Converter](https://lvgl.io/tools/imageconverter)
-3. Select the **LVGL v8** tab
-4. Upload your image
-5. Set **Color format**: `CF_INDEXED_1_BIT`
-6. Set **Output format**: `C array`
-7. Click **Convert** and download
+1. Prepare a **black & white PNG** image at **124×68 pixels** (landscape)
+2. Go to [image2cpp](https://javl.github.io/image2cpp/)
+3. Upload your image
+4. Configure settings:
+   - **Canvas size**: `124 x 68`
+   - **Background color**: `White`
+   - **Invert image colors**: Check if needed
+   - **Rotate image**: `90 degrees`
+5. Set **Output options**:
+   - **Code output format**: `Plain bytes`
+   - **Draw mode**: `Horizontal - 1 bit per pixel`
+6. Click **Generate code**
 
-### Step 2: Copy the Image Data
+### Step 2: Copy the Output
 
-Open the downloaded `.c` file. You'll see something like:
+You'll get output like:
 
-```c
-const uint8_t my_image_map[] = {
-    0xff, 0xff, 0xff, 0xff, /*Color of index 0*/  <-- SKIP these 8 bytes
-    0x00, 0x00, 0x00, 0xff, /*Color of index 1*/  <-- SKIP these 8 bytes
-    0x00, 0x00, 0x00, 0x00, 0x00, ...  <-- COPY from here
-};
+```
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+...
 ```
 
-**Copy only the pixel data** (everything after the first 8 color palette bytes).
+**Copy all the bytes** (should be 124 rows × 9 bytes = 1116 bytes).
 
-### Step 3: Paste Into static_image.c
+### Step 3: Paste Into static_img.c
 
 Open `boards/shields/nice_view_gem/assets/static_img.c` and:
 
-1. Update the dimensions at the top:
+1. Verify the dimensions (should already be correct):
    ```c
-   #define STATIC_IMG_WIDTH  69   // your image width
-   #define STATIC_IMG_HEIGHT 68   // your image height
+   #define STATIC_IMG_WIDTH  68
+   #define STATIC_IMG_HEIGHT 124
    ```
 
-2. Replace the `STATIC_IMG_MAP` with your pixel data:
+2. Replace the pixel data inside `static_img_map[]` (after the color palette):
    ```c
-   #define STATIC_IMG_MAP \
-       0x00, 0x00, 0x00, ...  // paste your data here
+   const ... uint8_t static_img_map[] = {
+   #if CONFIG_NICE_VIEW_WIDGET_INVERTED
+       0x00, 0x00, 0x00, 0xff,
+       0xff, 0xff, 0xff, 0xff,
+   #else
+       0xff, 0xff, 0xff, 0xff,
+       0x00, 0x00, 0x00, 0xff,
+   #endif
+       // PASTE YOUR BYTES HERE
+       0xff, 0xff, 0xff, ...
+   };
    ```
+
+3. Verify `data_size` is `1124` (8 palette + 1116 pixels)
 
 ### Step 4: Enable Static Image Mode
 
@@ -58,32 +73,50 @@ Build and flash your firmware to both keyboard halves.
 
 ---
 
-## Config Options
+## Display Layout
 
-In `corne.conf`:
-
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `CONFIG_NICE_VIEW_GEM_ANIMATION=y` | Animation | Shows the gem crystal animation |
-| `CONFIG_NICE_VIEW_GEM_ANIMATION=n` | Static | Shows your custom image from `static_img.c` |
-| `CONFIG_NICE_VIEW_GEM_ANIMATION_MS` | milliseconds | Animation speed (only when animation enabled) |
+```
+┌─────────────────────────────┐
+│  Battery  │  Signal         │  ← Top bar (36px) - unchanged
+├───────────┴─────────────────┤
+│                             │
+│                             │
+│     YOUR CUSTOM IMAGE       │  ← Middle + Bottom (124px)
+│       68 × 124 pixels       │
+│                             │
+│                             │
+└─────────────────────────────┘
+```
 
 ---
 
-## Display Specs
+## Config Options
 
-- **Resolution**: 160×68 pixels total
-- **Image area**: ~69×68 pixels (right side)
-- **Color depth**: 1-bit (black and white only)
+| Setting | Value | Description |
+|---------|-------|-------------|
+| `CONFIG_NICE_VIEW_GEM_ANIMATION=y` | Animation | Shows the gem crystal animation (smaller) |
+| `CONFIG_NICE_VIEW_GEM_ANIMATION=n` | Static | Shows your custom image (larger, 68×124) |
+
+---
+
+## image2cpp Settings Summary
+
+| Setting | Value |
+|---------|-------|
+| Canvas size | 124 x 68 |
+| Background color | White |
+| Rotate image | 90 degrees |
+| Code output format | Plain bytes |
+| Draw mode | Horizontal - 1 bit per pixel |
 
 ---
 
 ## Tips
 
+- Create your image at **124×68** (landscape), it gets rotated to **68×124** (portrait)
 - Use pure black and white images (no grayscale)
 - Simple line art works best
-- The default example shows a diamond shape - replace it with your own!
-- If image appears inverted, try `CONFIG_NICE_VIEW_WIDGET_INVERTED=y`
+- If image appears inverted, check "Invert image colors" in image2cpp or toggle `CONFIG_NICE_VIEW_WIDGET_INVERTED=y`
 
 ---
 
@@ -91,7 +124,8 @@ In `corne.conf`:
 
 | Issue | Solution |
 |-------|----------|
-| Image looks wrong | Make sure you skipped the first 8 palette bytes |
-| Build error | Check the dimensions match your image |
-| Image cropped | Resize to 69×68 or smaller |
-| Colors inverted | Toggle `CONFIG_NICE_VIEW_WIDGET_INVERTED` |
+| White/black rectangle | You haven't replaced the placeholder data |
+| Image looks wrong | Check rotation is set to 90° |
+| Image cropped | Check canvas size is 124×68 |
+| Colors inverted | Toggle "Invert image colors" or `CONFIG_NICE_VIEW_WIDGET_INVERTED` |
+| Build error | Make sure data_size is 1124 |
