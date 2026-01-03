@@ -13,23 +13,13 @@
 #define CONFIG_NICE_VIEW_GEM_POMODORO_WORK_DURATION 25
 #endif
 
-#ifndef CONFIG_NICE_VIEW_GEM_POMODORO_SHORT_BREAK
-#define CONFIG_NICE_VIEW_GEM_POMODORO_SHORT_BREAK 5
-#endif
-
-#ifndef CONFIG_NICE_VIEW_GEM_POMODORO_LONG_BREAK
-#define CONFIG_NICE_VIEW_GEM_POMODORO_LONG_BREAK 15
-#endif
-
-#ifndef CONFIG_NICE_VIEW_GEM_POMODORO_LONG_BREAK_INTERVAL
-#define CONFIG_NICE_VIEW_GEM_POMODORO_LONG_BREAK_INTERVAL 4
+#ifndef CONFIG_NICE_VIEW_GEM_POMODORO_BREAK_DURATION
+#define CONFIG_NICE_VIEW_GEM_POMODORO_BREAK_DURATION 5
 #endif
 
 // Convert minutes to seconds
 #define WORK_DURATION_SEC (CONFIG_NICE_VIEW_GEM_POMODORO_WORK_DURATION * 60)
-#define SHORT_BREAK_SEC (CONFIG_NICE_VIEW_GEM_POMODORO_SHORT_BREAK * 60)
-#define LONG_BREAK_SEC (CONFIG_NICE_VIEW_GEM_POMODORO_LONG_BREAK * 60)
-#define LONG_BREAK_INTERVAL CONFIG_NICE_VIEW_GEM_POMODORO_LONG_BREAK_INTERVAL
+#define BREAK_DURATION_SEC (CONFIG_NICE_VIEW_GEM_POMODORO_BREAK_DURATION * 60)
 
 // Timer state
 static struct pomodoro_data pom_data = {
@@ -37,7 +27,8 @@ static struct pomodoro_data pom_data = {
     .paused_from = POM_IDLE,
     .elapsed_seconds = 0,
     .session_duration = WORK_DURATION_SEC,
-    .work_sessions_completed = 0
+    .work_duration = WORK_DURATION_SEC,
+    .break_duration = BREAK_DURATION_SEC
 };
 
 static int64_t last_tick_time = 0;
@@ -75,8 +66,9 @@ static void stop_pomodoro_timer(void) {
 void pomodoro_init(void) {
     pom_data.state = POM_IDLE;
     pom_data.elapsed_seconds = 0;
-    pom_data.session_duration = WORK_DURATION_SEC;
-    pom_data.work_sessions_completed = 0;
+    pom_data.work_duration = WORK_DURATION_SEC;
+    pom_data.break_duration = BREAK_DURATION_SEC;
+    pom_data.session_duration = pom_data.work_duration;
     last_tick_time = k_uptime_get();
 }
 
@@ -91,8 +83,7 @@ void pomodoro_start_stop(void) {
         start_pomodoro_timer();
         break;
     case POM_RUNNING_WORK:
-    case POM_RUNNING_SHORT_BREAK:
-    case POM_RUNNING_LONG_BREAK:
+    case POM_RUNNING_BREAK:
         // Pause
         pom_data.paused_from = pom_data.state;
         pom_data.state = POM_PAUSED;
@@ -111,19 +102,38 @@ void pomodoro_reset(void) {
     stop_pomodoro_timer();
     pom_data.state = POM_IDLE;
     pom_data.elapsed_seconds = 0;
-    pom_data.session_duration = WORK_DURATION_SEC;
-    pom_data.work_sessions_completed = 0;
+    pom_data.work_duration = WORK_DURATION_SEC;
+    pom_data.break_duration = BREAK_DURATION_SEC;
+    pom_data.session_duration = pom_data.work_duration;
 }
 
+// Toggle between editing work time and break time when IDLE
+// Add time increases current displayed duration
 void pomodoro_add_time(void) {
     if (pom_data.state == POM_IDLE) {
-        pom_data.session_duration += 300;  // Add 5 minutes
+        // Increase work duration
+        pom_data.work_duration += 300;  // Add 5 minutes
+        pom_data.session_duration = pom_data.work_duration;
     }
 }
 
 void pomodoro_sub_time(void) {
-    if (pom_data.state == POM_IDLE && pom_data.session_duration > 300) {
-        pom_data.session_duration -= 300;  // Subtract 5 minutes (min 5 min)
+    if (pom_data.state == POM_IDLE) {
+        // Decrease work duration (min 5 min) OR if at min work, decrease break
+        if (pom_data.work_duration > 300) {
+            pom_data.work_duration -= 300;
+            pom_data.session_duration = pom_data.work_duration;
+        } else if (pom_data.break_duration > 60) {
+            // Min 1 minute break
+            pom_data.break_duration -= 60;
+        }
+    }
+}
+
+// New function to adjust break time
+void pomodoro_add_break_time(void) {
+    if (pom_data.state == POM_IDLE) {
+        pom_data.break_duration += 60;  // Add 1 minute to break
     }
 }
 
@@ -153,8 +163,7 @@ uint8_t pomodoro_get_progress_step(void) {
 
 void pomodoro_tick(void) {
     if (pom_data.state != POM_RUNNING_WORK && 
-        pom_data.state != POM_RUNNING_SHORT_BREAK &&
-        pom_data.state != POM_RUNNING_LONG_BREAK) {
+        pom_data.state != POM_RUNNING_BREAK) {
         return;
     }
 
@@ -170,21 +179,13 @@ void pomodoro_tick(void) {
             pom_data.elapsed_seconds = 0;
             
             if (pom_data.state == POM_RUNNING_WORK) {
-                pom_data.work_sessions_completed++;
-                
-                // Determine break type
-                if (pom_data.work_sessions_completed >= LONG_BREAK_INTERVAL) {
-                    pom_data.state = POM_RUNNING_LONG_BREAK;
-                    pom_data.session_duration = LONG_BREAK_SEC;
-                    pom_data.work_sessions_completed = 0;
-                } else {
-                    pom_data.state = POM_RUNNING_SHORT_BREAK;
-                    pom_data.session_duration = SHORT_BREAK_SEC;
-                }
+                // Work done, start break
+                pom_data.state = POM_RUNNING_BREAK;
+                pom_data.session_duration = pom_data.break_duration;
             } else {
                 // Break complete, start new work session
                 pom_data.state = POM_RUNNING_WORK;
-                pom_data.session_duration = WORK_DURATION_SEC;
+                pom_data.session_duration = pom_data.work_duration;
             }
         }
     }
@@ -264,14 +265,22 @@ void draw_pomodoro(lv_obj_t *canvas) {
     lv_draw_label_dsc_t time_label_dsc;
     init_label_dsc(&time_label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
 
-    // Draw time remaining (MM:SS) at top - bigger and higher
-    uint32_t remaining = pomodoro_get_remaining_seconds();
-    uint32_t minutes = remaining / 60;
-    uint32_t seconds = remaining % 60;
+    char time_str[16];
     
-    char time_str[8];
-    snprintf(time_str, sizeof(time_str), "%02u:%02u", minutes, seconds);
-    lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
+    if (pom_data.state == POM_IDLE) {
+        // In IDLE, show work time / break time
+        uint32_t work_min = pom_data.work_duration / 60;
+        uint32_t break_min = pom_data.break_duration / 60;
+        snprintf(time_str, sizeof(time_str), "%02u/%02u", work_min, break_min);
+        lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
+    } else {
+        // When running, show remaining time
+        uint32_t remaining = pomodoro_get_remaining_seconds();
+        uint32_t minutes = remaining / 60;
+        uint32_t seconds = remaining % 60;
+        snprintf(time_str, sizeof(time_str), "%02u:%02u", minutes, seconds);
+        lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
+    }
 
     // Draw outer circle outline (moved down to make room for bigger text)
     int circle_y = CIRCLE_CENTER_Y + 4;
@@ -290,20 +299,17 @@ void draw_pomodoro(lv_obj_t *canvas) {
                          OUTER_RADIUS - 7, progress, &fg_dsc);
     }
     
-    // Draw state label below circle - bigger font
+    // Draw state label below circle
     const char *state_str;
     switch (pom_data.state) {
     case POM_IDLE:
-        state_str = "IDLE";
+        state_str = "W/B";  // Work/Break format hint
         break;
     case POM_RUNNING_WORK:
         state_str = "WORK";
         break;
-    case POM_RUNNING_SHORT_BREAK:
+    case POM_RUNNING_BREAK:
         state_str = "BREAK";
-        break;
-    case POM_RUNNING_LONG_BREAK:
-        state_str = "LONG";
         break;
     case POM_PAUSED:
         state_str = "PAUSE";

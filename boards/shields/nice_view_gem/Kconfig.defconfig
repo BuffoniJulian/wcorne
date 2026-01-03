@@ -48,17 +48,9 @@ config NICE_VIEW_GEM_POMODORO_WORK_DURATION
     int "Pomodoro work session duration in minutes"
     default 25
 
-config NICE_VIEW_GEM_POMODORO_SHORT_BREAK
-    int "Pomodoro short break duration in minutes"
+config NICE_VIEW_GEM_POMODORO_BREAK_DURATION
+    int "Pomodoro break duration in minutes"
     default 5
-
-config NICE_VIEW_GEM_POMODORO_LONG_BREAK
-    int "Pomodoro long break duration in minutes"
-    default 15
-
-config NICE_VIEW_GEM_POMODORO_LONG_BREAK_INTERVAL
-    int "Number of work sessions before long break"
-    default 4
 
 config NICE_VIEW_WIDGET_STATUS
     select LV_USE_LABEL
