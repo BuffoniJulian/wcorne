@@ -311,16 +311,11 @@ void draw_pomodoro(lv_obj_t *canvas) {
         snprintf(time_str, sizeof(time_str), "%02u:00", break_min);
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
     } else {
-        // When running, show remaining time
+        // When running, show remaining time (MM:SS)
         uint32_t remaining = pomodoro_get_remaining_seconds();
         uint32_t minutes = remaining / 60;
-#ifdef CONFIG_NICE_VIEW_GEM_POMODORO_LIVE_CLOCK
         uint32_t seconds = remaining % 60;
-        snprintf(time_str, sizeof(time_str), "%02u:%02u", minutes, seconds);
-#else
-        // Battery saving: show only minutes (no leading zero)
-        snprintf(time_str, sizeof(time_str), "%u", minutes);
-#endif
+        snprintf(time_str, sizeof(time_str), "%u:%02u", minutes, seconds);
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
     }
 
