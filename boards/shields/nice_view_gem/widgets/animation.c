@@ -27,8 +27,8 @@ const lv_img_dsc_t *anim_imgs[] = {
     &crystal_13, &crystal_14, &crystal_15, &crystal_16,
 };
 #else
-/* Static image mode: use custom image from assets/static_image.c */
-LV_IMG_DECLARE(static_image);
+/* Static image mode: use custom image from assets/static_img.c */
+LV_IMG_DECLARE(static_img);
 #endif
 
 // Store reference to animation object for stop/resume
@@ -49,7 +49,7 @@ void draw_animation(lv_obj_t *canvas) {
 #else
     /* Static image mode */
     lv_obj_t *art = lv_img_create(canvas);
-    lv_img_set_src(art, &static_image);
+    lv_img_set_src(art, &static_img);
     anim_obj = art;
     anim_running = false;
 #endif

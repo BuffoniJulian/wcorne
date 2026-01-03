@@ -30,17 +30,17 @@ const uint8_t my_image_map[] = {
 
 ### Step 3: Paste Into static_image.c
 
-Open `boards/shields/nice_view_gem/assets/static_image.c` and:
+Open `boards/shields/nice_view_gem/assets/static_img.c` and:
 
 1. Update the dimensions at the top:
    ```c
-   #define STATIC_IMAGE_WIDTH  69   // your image width
-   #define STATIC_IMAGE_HEIGHT 68   // your image height
+   #define STATIC_IMG_WIDTH  69   // your image width
+   #define STATIC_IMG_HEIGHT 68   // your image height
    ```
 
-2. Replace the `STATIC_IMAGE_MAP` with your pixel data:
+2. Replace the `STATIC_IMG_MAP` with your pixel data:
    ```c
-   #define STATIC_IMAGE_MAP \
+   #define STATIC_IMG_MAP \
        0x00, 0x00, 0x00, ...  // paste your data here
    ```
 
@@ -65,7 +65,7 @@ In `corne.conf`:
 | Setting | Value | Description |
 |---------|-------|-------------|
 | `CONFIG_NICE_VIEW_GEM_ANIMATION=y` | Animation | Shows the gem crystal animation |
-| `CONFIG_NICE_VIEW_GEM_ANIMATION=n` | Static | Shows your custom image from `static_image.c` |
+| `CONFIG_NICE_VIEW_GEM_ANIMATION=n` | Static | Shows your custom image from `static_img.c` |
 | `CONFIG_NICE_VIEW_GEM_ANIMATION_MS` | milliseconds | Animation speed (only when animation enabled) |
 
 ---
