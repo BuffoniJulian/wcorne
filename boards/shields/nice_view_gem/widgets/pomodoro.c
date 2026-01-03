@@ -21,6 +21,9 @@
 #define WORK_DURATION_SEC (CONFIG_NICE_VIEW_GEM_POMODORO_WORK_DURATION * 60)
 #define BREAK_DURATION_SEC (CONFIG_NICE_VIEW_GEM_POMODORO_BREAK_DURATION * 60)
 
+// Battery saving: update interval (5 minutes in seconds)
+#define BATTERY_SAVE_UPDATE_INTERVAL 300
+
 // Timer state
 static struct pomodoro_data pom_data = {
     .state = POM_IDLE,
@@ -32,6 +35,7 @@ static struct pomodoro_data pom_data = {
 };
 
 static int64_t last_tick_time = 0;
+static uint32_t last_display_update_seconds = 0;  // For battery saving mode
 
 // Periodic timer for display updates
 static void pomodoro_timer_handler(struct k_work *work);
@@ -41,8 +45,23 @@ K_WORK_DEFINE(pomodoro_work, pomodoro_timer_handler);
 K_TIMER_DEFINE(pomodoro_timer, pomodoro_timer_expiry, NULL);
 
 static void pomodoro_timer_handler(struct k_work *work) {
+    enum pomodoro_state prev_state = pom_data.state;
     pomodoro_tick();
+    
+#ifdef CONFIG_NICE_VIEW_GEM_POMODORO_LIVE_CLOCK
+    // Live clock mode: update every second
     zmk_widget_screen_refresh();
+#else
+    // Battery saving mode: only update every 5 minutes or on state change
+    bool state_changed = (prev_state != pom_data.state);
+    uint32_t elapsed_since_update = pom_data.elapsed_seconds - last_display_update_seconds;
+    
+    if (state_changed || elapsed_since_update >= BATTERY_SAVE_UPDATE_INTERVAL || 
+        pom_data.elapsed_seconds < last_display_update_seconds) {
+        last_display_update_seconds = pom_data.elapsed_seconds;
+        zmk_widget_screen_refresh();
+    }
+#endif
 }
 
 static void pomodoro_timer_expiry(struct k_timer *timer) {
@@ -50,6 +69,7 @@ static void pomodoro_timer_expiry(struct k_timer *timer) {
 }
 
 static void start_pomodoro_timer(void) {
+    last_display_update_seconds = 0;  // Reset for fresh display updates
     k_timer_start(&pomodoro_timer, K_SECONDS(1), K_SECONDS(1));
 }
 
@@ -286,8 +306,13 @@ void draw_pomodoro(lv_obj_t *canvas) {
         // When running, show remaining time
         uint32_t remaining = pomodoro_get_remaining_seconds();
         uint32_t minutes = remaining / 60;
+#ifdef CONFIG_NICE_VIEW_GEM_POMODORO_LIVE_CLOCK
         uint32_t seconds = remaining % 60;
         snprintf(time_str, sizeof(time_str), "%02u:%02u", minutes, seconds);
+#else
+        // Battery saving: show only minutes
+        snprintf(time_str, sizeof(time_str), "%02u", minutes);
+#endif
         lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
     }
 

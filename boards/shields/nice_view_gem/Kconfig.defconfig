@@ -52,6 +52,14 @@ config NICE_VIEW_GEM_POMODORO_BREAK_DURATION
     int "Pomodoro break duration in minutes"
     default 5
 
+config NICE_VIEW_GEM_POMODORO_LIVE_CLOCK
+    bool "Update pomodoro clock every second (uses more battery)"
+    default n
+    help
+      When enabled, the clock updates every second.
+      When disabled (default), the clock only updates every 5 minutes
+      and when switching between work/break to save battery.
+
 config NICE_VIEW_WIDGET_STATUS
     select LV_USE_LABEL
     select LV_USE_IMG
