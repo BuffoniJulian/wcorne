@@ -260,12 +260,23 @@ void draw_pomodoro(lv_obj_t *canvas) {
     lv_draw_rect_dsc_t bg_dsc;
     init_rect_dsc(&bg_dsc, LVGL_BACKGROUND);
     
-    lv_draw_label_dsc_t label_dsc;
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_14, LV_TEXT_ALIGN_CENTER);
+    // Use larger font (18pt) for time display
+    lv_draw_label_dsc_t time_label_dsc;
+    init_label_dsc(&time_label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
 
-    // Draw outer circle outline
-    draw_circle_outline(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, OUTER_RADIUS, &fg_dsc);
-    draw_circle_outline(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, OUTER_RADIUS - 1, &fg_dsc);
+    // Draw time remaining (MM:SS) at top - bigger and higher
+    uint32_t remaining = pomodoro_get_remaining_seconds();
+    uint32_t minutes = remaining / 60;
+    uint32_t seconds = remaining % 60;
+    
+    char time_str[8];
+    snprintf(time_str, sizeof(time_str), "%02u:%02u", minutes, seconds);
+    lv_canvas_draw_text(canvas, 4, 0, 60, &time_label_dsc, time_str);
+
+    // Draw outer circle outline (moved down to make room for bigger text)
+    int circle_y = CIRCLE_CENTER_Y + 4;
+    draw_circle_outline(canvas, CIRCLE_CENTER_X, circle_y, OUTER_RADIUS - 4, &fg_dsc);
+    draw_circle_outline(canvas, CIRCLE_CENTER_X, circle_y, OUTER_RADIUS - 5, &fg_dsc);
     
     // Calculate progress as fraction of elapsed time
     float progress = 0.0f;
@@ -275,20 +286,11 @@ void draw_pomodoro(lv_obj_t *canvas) {
     
     // Draw pie segment filling clockwise from top
     if (progress > 0.0f) {
-        draw_pie_segment(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, 
-                         OUTER_RADIUS - 3, progress, &fg_dsc);
+        draw_pie_segment(canvas, CIRCLE_CENTER_X, circle_y, 
+                         OUTER_RADIUS - 7, progress, &fg_dsc);
     }
-
-    // Draw time remaining (MM:SS) above circle
-    uint32_t remaining = pomodoro_get_remaining_seconds();
-    uint32_t minutes = remaining / 60;
-    uint32_t seconds = remaining % 60;
     
-    char time_str[8];
-    snprintf(time_str, sizeof(time_str), "%02u:%02u", minutes, seconds);
-    lv_canvas_draw_text(canvas, 10, 2, 48, &label_dsc, time_str);
-    
-    // Draw state label below circle
+    // Draw state label below circle - bigger font
     const char *state_str;
     switch (pom_data.state) {
     case POM_IDLE:
@@ -310,7 +312,7 @@ void draw_pomodoro(lv_obj_t *canvas) {
         state_str = "";
     }
     
-    lv_draw_label_dsc_t small_label_dsc;
-    init_label_dsc(&small_label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_14, LV_TEXT_ALIGN_CENTER);
-    lv_canvas_draw_text(canvas, 5, 54, 58, &small_label_dsc, state_str);
+    lv_draw_label_dsc_t state_label_dsc;
+    init_label_dsc(&state_label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_18, LV_TEXT_ALIGN_CENTER);
+    lv_canvas_draw_text(canvas, 0, 48, 68, &state_label_dsc, state_str);
 }
