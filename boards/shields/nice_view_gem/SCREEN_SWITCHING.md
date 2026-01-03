@@ -1,4 +1,4 @@
-# Screen Switching for nice_view_gem Display
+# Screen Switching for nice_view_gem **Display**
 
 ## Overview
 

@@ -36,12 +36,16 @@ config NICE_VIEW_GEM_WPM_FIXED_RANGE_MAX
     default 100
 
 config NICE_VIEW_GEM_ANIMATION
-    bool "Enable animation on peripheral"
+    bool "Enable animation on peripheral (disable for static image)"
     default y
+    help
+      When enabled, shows the animated gem crystal.
+      When disabled, shows a static image from assets/static_image.c
 
 config NICE_VIEW_GEM_ANIMATION_MS
     int "Animation length in milliseconds"
     default 960
+    depends on NICE_VIEW_GEM_ANIMATION
 
 # Pomodoro Timer Configuration
 config NICE_VIEW_GEM_POMODORO_WORK_DURATION

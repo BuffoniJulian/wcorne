@@ -2,6 +2,8 @@
 #include <zephyr/kernel.h>
 #include "animation.h"
 
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
+/* Animation mode: use crystal frames */
 LV_IMG_DECLARE(crystal_01);
 LV_IMG_DECLARE(crystal_02);
 LV_IMG_DECLARE(crystal_03);
@@ -24,6 +26,10 @@ const lv_img_dsc_t *anim_imgs[] = {
     &crystal_07, &crystal_08, &crystal_09, &crystal_10, &crystal_11, &crystal_12,
     &crystal_13, &crystal_14, &crystal_15, &crystal_16,
 };
+#else
+/* Static image mode: use custom image from assets/static_image.c */
+LV_IMG_DECLARE(static_image);
+#endif
 
 // Store reference to animation object for stop/resume
 static lv_obj_t *anim_obj = NULL;
@@ -41,14 +47,11 @@ void draw_animation(lv_obj_t *canvas) {
     anim_obj = art;
     anim_running = true;
 #else
+    /* Static image mode */
     lv_obj_t *art = lv_img_create(canvas);
-
-    int length = sizeof(anim_imgs) / sizeof(anim_imgs[0]);
-    srand(k_uptime_get_32());
-    int random_index = rand() % length;
-
-    lv_img_set_src(art, anim_imgs[random_index]);
+    lv_img_set_src(art, &static_image);
     anim_obj = art;
+    anim_running = false;
 #endif
 
     lv_obj_align(art, LV_ALIGN_TOP_LEFT, 36, 0);
