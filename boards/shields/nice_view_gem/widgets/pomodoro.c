@@ -190,21 +190,6 @@ void pomodoro_tick(void) {
     }
 }
 
-// Draw a filled circle using canvas primitives
-static void draw_filled_circle(lv_obj_t *canvas, int cx, int cy, int radius, 
-                                lv_draw_rect_dsc_t *dsc) {
-    // Draw circle using horizontal lines (scanline approach)
-    for (int y = -radius; y <= radius; y++) {
-        int half_width = (int)sqrt((double)(radius * radius - y * y));
-        for (int x = -half_width; x <= half_width; x++) {
-            if (cx + x >= 0 && cx + x < BUFFER_SIZE && 
-                cy + y >= 0 && cy + y < BUFFER_SIZE) {
-                lv_canvas_draw_rect(canvas, cx + x, cy + y, 1, 1, dsc);
-            }
-        }
-    }
-}
-
 // Draw circle outline
 static void draw_circle_outline(lv_obj_t *canvas, int cx, int cy, int radius, 
                                  lv_draw_rect_dsc_t *dsc) {
@@ -233,6 +218,41 @@ static void draw_circle_outline(lv_obj_t *canvas, int cx, int cy, int radius,
     }
 }
 
+// Draw a filled pie segment clockwise from 12 o'clock
+// progress: 0.0 to 1.0 (0% to 100%)
+static void draw_pie_segment(lv_obj_t *canvas, int cx, int cy, int radius,
+                              float progress, lv_draw_rect_dsc_t *dsc) {
+    if (progress <= 0.0f) return;
+    if (progress > 1.0f) progress = 1.0f;
+    
+    // Calculate end angle in radians (clockwise from top)
+    // Top is -PI/2, full circle is -PI/2 + 2*PI
+    float end_angle = progress * 2.0f * 3.14159265f;
+    
+    // Draw filled pie by checking each pixel
+    for (int py = -radius; py <= radius; py++) {
+        for (int px = -radius; px <= radius; px++) {
+            // Check if point is within circle
+            if (px * px + py * py > radius * radius) continue;
+            
+            // Calculate angle of this point from center (clockwise from top)
+            // atan2 gives angle from positive x-axis, we want from negative y-axis (top)
+            float angle = atan2((float)px, (float)(-py));
+            if (angle < 0) angle += 2.0f * 3.14159265f;
+            
+            // Check if angle is within the pie segment
+            if (angle <= end_angle) {
+                int draw_x = cx + px;
+                int draw_y = cy + py;
+                if (draw_x >= 0 && draw_x < BUFFER_SIZE && 
+                    draw_y >= 0 && draw_y < BUFFER_SIZE) {
+                    lv_canvas_draw_rect(canvas, draw_x, draw_y, 1, 1, dsc);
+                }
+            }
+        }
+    }
+}
+
 void draw_pomodoro(lv_obj_t *canvas) {
     lv_draw_rect_dsc_t fg_dsc;
     init_rect_dsc(&fg_dsc, LVGL_FOREGROUND);
@@ -247,17 +267,16 @@ void draw_pomodoro(lv_obj_t *canvas) {
     draw_circle_outline(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, OUTER_RADIUS, &fg_dsc);
     draw_circle_outline(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, OUTER_RADIUS - 1, &fg_dsc);
     
-    // Calculate inner circle radius based on progress
-    // Area should grow linearly, so radius = sqrt(progress) * max_radius
-    uint8_t step = pomodoro_get_progress_step();
-    uint8_t max_steps = pom_data.session_duration / 300;
-    if (max_steps == 0) max_steps = 1;
+    // Calculate progress as fraction of elapsed time
+    float progress = 0.0f;
+    if (pom_data.session_duration > 0) {
+        progress = (float)pom_data.elapsed_seconds / (float)pom_data.session_duration;
+    }
     
-    float progress = (float)step / (float)max_steps;
-    int inner_radius = (int)(sqrt(progress) * MAX_INNER_RADIUS);
-    
-    if (inner_radius > 0) {
-        draw_filled_circle(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, inner_radius, &fg_dsc);
+    // Draw pie segment filling clockwise from top
+    if (progress > 0.0f) {
+        draw_pie_segment(canvas, CIRCLE_CENTER_X, CIRCLE_CENTER_Y, 
+                         OUTER_RADIUS - 3, progress, &fg_dsc);
     }
 
     // Draw time remaining (MM:SS) above circle
