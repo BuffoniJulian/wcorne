@@ -337,10 +337,10 @@ void draw_pomodoro(lv_obj_t *canvas) {
     const char *state_str;
     switch (pom_data.state) {
     case POM_IDLE:
-        state_str = "WORK";  // Configuring work time
+        state_str = "IDLE";
         break;
     case POM_SETUP_BREAK:
-        state_str = "BREAK"; // Configuring break time
+        state_str = "BREAK";
         break;
     case POM_RUNNING_WORK:
         state_str = "WORK";
