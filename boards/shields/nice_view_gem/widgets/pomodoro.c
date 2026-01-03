@@ -118,22 +118,22 @@ void pomodoro_add_time(void) {
 }
 
 void pomodoro_sub_time(void) {
-    if (pom_data.state == POM_IDLE) {
-        // Decrease work duration (min 5 min) OR if at min work, decrease break
-        if (pom_data.work_duration > 300) {
-            pom_data.work_duration -= 300;
-            pom_data.session_duration = pom_data.work_duration;
-        } else if (pom_data.break_duration > 60) {
-            // Min 1 minute break
-            pom_data.break_duration -= 60;
-        }
+    if (pom_data.state == POM_IDLE && pom_data.work_duration > 300) {
+        // Decrease work duration (min 5 min)
+        pom_data.work_duration -= 300;
+        pom_data.session_duration = pom_data.work_duration;
     }
 }
 
-// New function to adjust break time
 void pomodoro_add_break_time(void) {
     if (pom_data.state == POM_IDLE) {
         pom_data.break_duration += 60;  // Add 1 minute to break
+    }
+}
+
+void pomodoro_sub_break_time(void) {
+    if (pom_data.state == POM_IDLE && pom_data.break_duration > 60) {
+        pom_data.break_duration -= 60;  // Sub 1 minute from break (min 1 min)
     }
 }
 
@@ -303,7 +303,7 @@ void draw_pomodoro(lv_obj_t *canvas) {
     const char *state_str;
     switch (pom_data.state) {
     case POM_IDLE:
-        state_str = "W/B";  // Work/Break format hint
+        state_str = "IDLE";
         break;
     case POM_RUNNING_WORK:
         state_str = "WORK";

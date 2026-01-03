@@ -30,8 +30,9 @@ struct pomodoro_data {
 void pomodoro_start_stop(void);
 void pomodoro_reset(void);
 void pomodoro_add_time(void);       // Add 5 min to work time (when IDLE)
-void pomodoro_sub_time(void);       // Sub 5 min from work (or 1 min from break if work at min)
+void pomodoro_sub_time(void);       // Sub 5 min from work time (when IDLE)
 void pomodoro_add_break_time(void); // Add 1 min to break time (when IDLE)
+void pomodoro_sub_break_time(void); // Sub 1 min from break time (when IDLE)
 
 // State getters
 enum pomodoro_state pomodoro_get_state(void);
