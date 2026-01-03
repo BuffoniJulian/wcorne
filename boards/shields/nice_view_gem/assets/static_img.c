@@ -3,12 +3,13 @@
  * 
  * HOW TO USE YOUR OWN IMAGE:
  * 1. Go to https://javl.github.io/image2cpp/
- * 2. Upload your image (124x68 pixels, black & white PNG)
+ * 2. Upload your image (68x124 pixels, black & white PNG - PORTRAIT as seen on display)
  * 3. Settings:
- *    - Canvas size: 124 x 68
+ *    - Canvas size: 68 x 124
+ *    - Rotate image: 90 degrees
  *    - Code output format: Plain bytes
  *    - Draw mode: Horizontal - 1 bit per pixel
- * 4. Click "Generate code"
+ * 4. Click "Generate code" -> outputs 124x68 (16 bytes/row × 68 rows)
  * 5. Copy all the bytes and paste below (after the color palette)
  * 6. Set CONFIG_NICE_VIEW_GEM_ANIMATION=n in corne.conf
  * 7. Rebuild and flash
@@ -19,11 +20,12 @@
 #include <lvgl.h>
 
 /* ============================================================================
- * EDIT THESE VALUES TO MATCH YOUR IMAGE (after 90° rotation: 68 wide x 124 tall)
+ * Image dimensions after 90° rotation: 124 wide x 68 tall
+ * (Create your image at 68x124 portrait, rotate 90° in image2cpp)
  * ============================================================================ */
 
-#define STATIC_IMG_WIDTH  68
-#define STATIC_IMG_HEIGHT 124
+#define STATIC_IMG_WIDTH  124
+#define STATIC_IMG_HEIGHT 68
 
 /* ============================================================================
  * DO NOT EDIT BELOW THIS LINE
@@ -125,6 +127,6 @@ const lv_img_dsc_t static_img = {
     .header.reserved = 0,
     .header.w = STATIC_IMG_WIDTH,
     .header.h = STATIC_IMG_HEIGHT,
-    .data_size = 1124,  /* 8 palette + 9 bytes/row * 124 rows */
+    .data_size = 1096,  /* 8 palette + 16 bytes/row * 68 rows */
     .data = static_img_map,
 };

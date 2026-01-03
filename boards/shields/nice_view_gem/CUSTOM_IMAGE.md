@@ -7,11 +7,11 @@ The image covers the middle and bottom areas, leaving only the top bar (battery/
 
 ### Step 1: Convert Your Image
 
-1. Prepare a **black & white PNG** image at **124×68 pixels** (landscape)
+1. Prepare a **black & white PNG** image at **68×124 pixels** (PORTRAIT - as seen on display)
 2. Go to [image2cpp](https://javl.github.io/image2cpp/)
 3. Upload your image
 4. Configure settings:
-   - **Canvas size**: `124 x 68`
+   - **Canvas size**: `68 x 124`
    - **Background color**: `White`
    - **Invert image colors**: Check if needed
    - **Rotate image**: `90 degrees`
@@ -22,24 +22,24 @@ The image covers the middle and bottom areas, leaving only the top bar (battery/
 
 ### Step 2: Copy the Output
 
-You'll get output like:
+After 90° rotation, you'll get **124×68** output (16 bytes per row × 68 rows):
 
 ```
-0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
-0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
 ...
 ```
 
-**Copy all the bytes** (should be 124 rows × 9 bytes = 1116 bytes).
+**Copy all the bytes** (68 rows × 16 bytes = 1088 bytes).
 
 ### Step 3: Paste Into static_img.c
 
 Open `boards/shields/nice_view_gem/assets/static_img.c` and:
 
-1. Verify the dimensions (should already be correct):
+1. Verify the dimensions (these are AFTER rotation):
    ```c
-   #define STATIC_IMG_WIDTH  68
-   #define STATIC_IMG_HEIGHT 124
+   #define STATIC_IMG_WIDTH  124
+   #define STATIC_IMG_HEIGHT 68
    ```
 
 2. Replace the pixel data inside `static_img_map[]` (after the color palette):
@@ -52,12 +52,12 @@ Open `boards/shields/nice_view_gem/assets/static_img.c` and:
        0xff, 0xff, 0xff, 0xff,
        0x00, 0x00, 0x00, 0xff,
    #endif
-       // PASTE YOUR BYTES HERE
+       // PASTE YOUR BYTES HERE (16 bytes per row, 68 rows)
        0xff, 0xff, 0xff, ...
    };
    ```
 
-3. Verify `data_size` is `1124` (8 palette + 1116 pixels)
+3. Verify `data_size` is `1096` (8 palette + 1088 pixels)
 
 ### Step 4: Enable Static Image Mode
 
@@ -76,26 +76,20 @@ Build and flash your firmware to both keyboard halves.
 ## Display Layout
 
 ```
-┌─────────────────────────────┐
-│  Battery  │  Signal         │  ← Top bar (36px) - unchanged
-├───────────┴─────────────────┤
-│                             │
-│                             │
-│     YOUR CUSTOM IMAGE       │  ← Middle + Bottom (124px)
-│       68 × 124 pixels       │
-│                             │
-│                             │
-└─────────────────────────────┘
+How you see it on the display:
+┌──────────┐
+│Batt│ Sig │  ← Status bar (36px)
+├──────────┤
+│          │
+│  YOUR    │
+│  IMAGE   │  ← Your 68×124 image area
+│ (68×124) │
+│          │
+└──────────┘
+
+Create your image at 68×124 (portrait)
+Rotate 90° in image2cpp → outputs 124×68 for the buffer
 ```
-
----
-
-## Config Options
-
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `CONFIG_NICE_VIEW_GEM_ANIMATION=y` | Animation | Shows the gem crystal animation (smaller) |
-| `CONFIG_NICE_VIEW_GEM_ANIMATION=n` | Static | Shows your custom image (larger, 68×124) |
 
 ---
 
@@ -103,20 +97,30 @@ Build and flash your firmware to both keyboard halves.
 
 | Setting | Value |
 |---------|-------|
-| Canvas size | 124 x 68 |
-| Background color | White |
-| Rotate image | 90 degrees |
+| **Your image size** | **68 × 124** (portrait, as seen on display) |
+| Canvas size | 68 x 124 |
+| Rotate image | **90 degrees** |
 | Code output format | Plain bytes |
 | Draw mode | Horizontal - 1 bit per pixel |
+| **Output size** | 124 × 68 (after rotation) |
+
+---
+
+## Config Options
+
+| Setting | Value | Description |
+|---------|-------|-------------|
+| `CONFIG_NICE_VIEW_GEM_ANIMATION=y` | Animation | Shows the gem crystal animation |
+| `CONFIG_NICE_VIEW_GEM_ANIMATION=n` | Static | Shows your custom image |
 
 ---
 
 ## Tips
 
-- Create your image at **124×68** (landscape), it gets rotated to **68×124** (portrait)
+- Create your image at **68×124** (portrait) - exactly as you want it to appear
+- The 90° rotation in image2cpp converts it to the buffer format
 - Use pure black and white images (no grayscale)
-- Simple line art works best
-- If image appears inverted, check "Invert image colors" in image2cpp or toggle `CONFIG_NICE_VIEW_WIDGET_INVERTED=y`
+- If image appears inverted, check "Invert image colors" in image2cpp
 
 ---
 
@@ -125,7 +129,7 @@ Build and flash your firmware to both keyboard halves.
 | Issue | Solution |
 |-------|----------|
 | White/black rectangle | You haven't replaced the placeholder data |
-| Image looks wrong | Check rotation is set to 90° |
-| Image cropped | Check canvas size is 124×68 |
-| Colors inverted | Toggle "Invert image colors" or `CONFIG_NICE_VIEW_WIDGET_INVERTED` |
-| Build error | Make sure data_size is 1124 |
+| Image rotated wrong | Make sure rotation is **90 degrees** |
+| Image size wrong | Create at 68×124, canvas 68×124, rotate 90° |
+| Colors inverted | Toggle "Invert image colors" in image2cpp |
+| Build error | Make sure data_size is 1096 |
