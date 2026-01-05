@@ -1,0 +1,41 @@
+/* Pomodoro and screen control behaviors */
+
+/ {
+    behaviors {
+        scr_cyc: screen_cycle {
+            compatible = "zmk,behavior-screen-cycle";
+            label = "SCREEN_CYCLE";
+            #binding-cells = <0>;
+        };
+
+        anim_tog: anim_toggle {
+            compatible = "zmk,behavior-anim-toggle";
+            label = "ANIM_TOGGLE";
+            #binding-cells = <0>;
+        };
+
+        pom_ss: pom_start_stop {
+            compatible = "zmk,behavior-pom-start-stop";
+            label = "POM_START_STOP";
+            #binding-cells = <0>;
+        };
+
+        pom_rst: pom_reset {
+            compatible = "zmk,behavior-pom-reset";
+            label = "POM_RESET";
+            #binding-cells = <0>;
+        };
+
+        pom_add: pom_add_time {
+            compatible = "zmk,behavior-pom-add-time";
+            label = "POM_ADD_TIME";
+            #binding-cells = <0>;
+        };
+
+        pom_sub: pom_sub_time {
+            compatible = "zmk,behavior-pom-sub-time";
+            label = "POM_SUB_TIME";
+            #binding-cells = <0>;
+        };
+    };
+};
