@@ -30,7 +30,7 @@
             leader_sequence_el_chi     { bindings = <&uc UC_EL_CHI>;     sequence = <C H>; };            // χ
             leader_sequence_el_psi     { bindings = <&uc UC_EL_PSI>;     sequence = <P S>; };            // ψ
             leader_sequence_el_omega   { bindings = <&uc UC_EL_OMEGA>;   sequence = <O M E G A>; };      // ω
-            leader_sequence_ex_email   { bindings = <&emaill>;          sequence = <E M A I L>; };
+            leader_sequence_ex_email   { bindings = <&emaill>;           sequence = <E M A I L>; };
         };
     };
 };
