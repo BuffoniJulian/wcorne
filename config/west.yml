@@ -6,8 +6,6 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: BuffoniJulian
       url-base: https://github.com/BuffoniJulian
-    - name: send-string
-      url-base: https://github.com/BuffoniJulian
     # Additional modules containing boards/shields/custom code can be listed here as well
     # See https://docs.zephyrproject.org/3.2.0/develop/west/manifest.html#projects
   
@@ -17,8 +15,6 @@ manifest:
       import: app/west.yml
     - name: zmk-leader-key
       remote: BuffoniJulian
-    - name: zmk-send-string
-      remote: send-string
     - name: zmk-helpers
       remote: BuffoniJulian
   self:
