@@ -41,42 +41,6 @@
             layers = <7>;
         };
 
-        lalt_a_acute {
-            bindings = <&a_acute>;
-            key-positions = < /* LALT */ 36  /* A */ 13 >;
-            layers = <0>;
-        };
-
-        lalt_e_acute {
-            bindings = <&e_acute>;
-            key-positions = <36 3>;
-            layers = <0>;
-        };
-
-        lalt_i_acute {
-            bindings = <&i_acute>;
-            key-positions = <36 8>;
-            layers = <0>;
-        };
-
-        lalt_o_acute {
-            bindings = <&o_acute>;
-            key-positions = <36 9>;
-            layers = <0>;
-        };
-
-        lalt_u_acute {
-            bindings = <&u_acute>;
-            key-positions = <36 7>;
-            layers = <0>;
-        };
-
-        lalt_enye {
-            bindings = <&enye>;
-            key-positions = <36 30>;
-            layers = <0>;
-        };
-
         to_layer_0_from_6 {
             bindings = <&to 0>;
             key-positions = <40 41>;
