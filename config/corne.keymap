@@ -6,6 +6,10 @@
 #include <dt-bindings/zmk/pointing.h>
 
 / {
+    chosen {
+        zmk,charmap = &charmap_us;
+    };
+    
     combos {
         compatible = "zmk,combos";
 
@@ -210,11 +214,7 @@
             #binding-cells = <0>;
         };
 
-        email: email {
-            compatible = "zmk,behavior-send-string";
-            #binding-cells = <0>;
-            text = "julian_buffoni@hotmail.com.ar";
-        };
+        ZMK_SEND_STRING(email, "julian_buffoni@hotmail.com.ar")
 
         leader: leader {
             compatible = "zmk,behavior-leader-key";
