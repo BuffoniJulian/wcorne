@@ -4,6 +4,8 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: urob
+      url-base: https://github.com/BuffoniJulian
     - name: send-string
       url-base: https://github.com/BuffoniJulian
     # Additional modules containing boards/shields/custom code can be listed here as well
@@ -12,13 +14,12 @@ manifest:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
+    - name: zmk-leader-key
+      remote: urob
     - name: zmk-send-string
       remote: send-string
 
-
     # ZMK modules
-    - name: zmk-leader-key
-      path: modules/zmk/leader-key
     - name: zmk-unicode
       path: modules/zmk/unicode
 
