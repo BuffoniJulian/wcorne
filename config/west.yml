@@ -18,5 +18,7 @@ manifest:
       remote: urob
     - name: zmk-send-string
       remote: send-string
+    - name: zmk-helpers
+      path: modules/zmk/helpers
   self:
     path: config
