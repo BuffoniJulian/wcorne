@@ -182,8 +182,6 @@
         };
     };
 
-#include "leader.dtsi"
-
     keymap {
         compatible = "zmk,keymap";
 
