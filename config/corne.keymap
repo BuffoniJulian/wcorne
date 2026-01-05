@@ -181,6 +181,7 @@
             tapping-term-ms = <200>;
         };
 
+        ZMK_SEND_STRING(hello_world, "Hello, world!")
 
         leader: leader {
             compatible = "zmk,behavior-leader-key";
@@ -189,7 +190,12 @@
 
             email_expansion {
                 sequence = <E M A I L>;
-                bindings = <&kp A>;
+                bindings = <&emaill>;
+            };
+
+            email_expansion {
+                sequence = <A A A>;
+                bindings = <&hello_world>;
             };
         };
     };
