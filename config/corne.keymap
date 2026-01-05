@@ -4,6 +4,7 @@
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
+#include <behaviors/unicode.dtsi>
 
 / {
     chosen {
@@ -212,19 +213,6 @@
             compatible = "zmk,behavior-pom-sub-time";
             label = "POM_SUB_TIME";
             #binding-cells = <0>;
-        };
-
-        ZMK_SEND_STRING(email, "julian_buffoni@hotmail.com.ar")
-
-        leader: leader {
-            compatible = "zmk,behavior-leader-key";
-            #binding-cells = <0>;
-            ignore-keys = <LSHFT RSHFT>;
-
-            email_expansion {
-                sequence = <E M A I L>;
-                bindings = <&email>;
-            };
         };
     };
 
