@@ -223,7 +223,7 @@
 
             email_expansion {
                 sequence = <E M A I L>;
-                bindings = <&emaill>;
+                bindings = <&email>;
             };
         };
     };
