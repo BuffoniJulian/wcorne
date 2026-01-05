@@ -180,6 +180,8 @@
             tapping-term-ms = <200>;
         };
 
+        ZMK_SEND_STRING(email, "julian_buffoni@hotmail.com.ar")
+
         leader: leader {
             compatible = "zmk,behavior-leader-key";
             #binding-cells = <0>;
