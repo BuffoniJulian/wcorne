@@ -4,7 +4,7 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: urob
+    - name: BuffoniJulian
       url-base: https://github.com/BuffoniJulian
     - name: send-string
       url-base: https://github.com/BuffoniJulian
@@ -15,10 +15,10 @@ manifest:
       remote: zmkfirmware
       import: app/west.yml
     - name: zmk-leader-key
-      remote: urob
+      remote: BuffoniJulian
     - name: zmk-send-string
       remote: send-string
     - name: zmk-helpers
-      remote: urob
+      remote: BuffoniJulian
   self:
     path: config
