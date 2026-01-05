@@ -8,6 +8,7 @@
 #include "character_map.dtsi"
 #include "pomodoro.dtsi"
 #include "espanso.dtsi"
+#include "leader.dtsi"
 
 / {
     chosen {
@@ -104,14 +105,6 @@
             bindings = <&mo 2>, <&to 5>;
 
             tapping-term-ms = <225>;
-        };
-
-        leader: leader {
-            compatible = "zmk,behavior-leader-key";
-            #binding-cells = <0>;
-            ignore-keys = <LSHFT RSHFT>;
-
-            email_expansion { sequence = <E M A I L>; bindings = <&email>; };
         };
     };
 
