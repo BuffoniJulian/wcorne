@@ -34,7 +34,7 @@
             ZMK_LEADER_SEQUENCE(el_chi,     &uc UC_EL_CHI,     C H)             // χ
             ZMK_LEADER_SEQUENCE(el_psi,     &uc UC_EL_PSI,     P S)             // ψ
             ZMK_LEADER_SEQUENCE(el_omega,   &uc UC_EL_OMEGA,   O M E G A)       // ω
-            ZMK_LEADER_SEQUENCE(ex_email,   &emaill,           E M A I L)
+        
         };
     };
 };
