@@ -1,44 +1,36 @@
-#undef ZMK_LEADER_SEQUENCE
-#define ZMK_LEADER_SEQUENCE(name, leader_bindings, leader_sequence) \
-    / { \
-        behaviors { \
-            leader: leader { \
-                compatible = "zmk,behavior-leader-key"; \
-                #binding-cells = <0>; \
-                ignore-keys = <LSHFT RSHFT>; \
-                name { \
-                    bindings = <leader_bindings>; \
-                    sequence = <leader_sequence>; \
-                }; \
-            }; \
-        }; \
+/ {
+    behaviors {
+        leader: leader {
+            compatible = "zmk,behavior-leader-key";
+            #binding-cells = <0>;
+            ignore-keys = <LSHFT RSHFT>;
+
+            /* Greek letters */
+            leader_sequence_el_alpha   { bindings = <&uc UC_EL_ALPHA>;   sequence = <A L P H A>; };      // α
+            leader_sequence_el_beta    { bindings = <&uc UC_EL_BETA>;    sequence = <B E T A>; };        // β
+            leader_sequence_el_gamma   { bindings = <&uc UC_EL_GAMMA>;   sequence = <G A M M A>; };      // γ
+            leader_sequence_el_delta   { bindings = <&uc UC_EL_DELTA>;   sequence = <D E L T A>; };      // δ
+            leader_sequence_el_epsilon { bindings = <&uc UC_EL_EPSILON>; sequence = <E P S I L O N>; };  // ε
+            leader_sequence_el_zeta    { bindings = <&uc UC_EL_ZETA>;    sequence = <Z E T A>; };        // ζ
+            leader_sequence_el_eta     { bindings = <&uc UC_EL_ETA>;     sequence = <E T A>; };          // η
+            leader_sequence_el_theta   { bindings = <&uc UC_EL_THETA>;   sequence = <T H E T A>; };      // θ
+            leader_sequence_el_iota    { bindings = <&uc UC_EL_IOTA>;    sequence = <I O T A>; };        // ι
+            leader_sequence_el_kappa   { bindings = <&uc UC_EL_KAPPA>;   sequence = <K A P P A>; };      // κ
+            leader_sequence_el_lambda  { bindings = <&uc UC_EL_LAMBDA>;  sequence = <L A M B D A>; };    // λ
+            leader_sequence_el_mu      { bindings = <&uc UC_EL_MU>;      sequence = <M U>; };            // μ
+            leader_sequence_el_nu      { bindings = <&uc UC_EL_NU>;      sequence = <N U>; };            // ν
+            leader_sequence_el_xi      { bindings = <&uc UC_EL_XI>;      sequence = <X I>; };            // ξ
+            leader_sequence_el_omikron { bindings = <&uc UC_EL_OMIKRON>; sequence = <O M I K R O N>; };  // ο
+            leader_sequence_el_pi      { bindings = <&uc UC_EL_PI>;      sequence = <P I>; };            // π
+            leader_sequence_el_rho     { bindings = <&uc UC_EL_RHO>;     sequence = <R H O>; };          // ρ
+            leader_sequence_el_sigma   { bindings = <&uc UC_EL_SIGMA>;   sequence = <S I G M A>; };      // σ
+            leader_sequence_el_tau     { bindings = <&uc UC_EL_TAU>;     sequence = <T A U>; };          // τ
+            leader_sequence_el_upsilon { bindings = <&uc UC_EL_UPSILON>; sequence = <U P S I L O N>; };  // υ
+            leader_sequence_el_phi     { bindings = <&uc UC_EL_PHI>;     sequence = <P H I>; };          // ϕ
+            leader_sequence_el_chi     { bindings = <&uc UC_EL_CHI>;     sequence = <C H>; };            // χ
+            leader_sequence_el_psi     { bindings = <&uc UC_EL_PSI>;     sequence = <P S>; };            // ψ
+            leader_sequence_el_omega   { bindings = <&uc UC_EL_OMEGA>;   sequence = <O M E G A>; };      // ω
+            leader_sequence_ex_email   { bindings = <&emaill>;          sequence = <E M A I L>; };
+        };
     };
-
-/* Productivity */
-ZMK_LEADER_SEQUENCE(ex_email,   &kp A,              E M A I L)
-
-/* Greek letters */
-ZMK_LEADER_SEQUENCE(el_alpha,   &uc UC_EL_ALPHA,      A L P H A)      // α
-ZMK_LEADER_SEQUENCE(el_beta,    &uc UC_EL_BETA,       B E T A)        // β
-ZMK_LEADER_SEQUENCE(el_gamma,   &uc UC_EL_GAMMA,      G A M M A)      // γ
-ZMK_LEADER_SEQUENCE(el_delta,   &uc UC_EL_DELTA,      D E L T A)      // δ
-ZMK_LEADER_SEQUENCE(el_epsilon, &uc UC_EL_EPSILON,    E P S I L O N)  // ε
-ZMK_LEADER_SEQUENCE(el_zeta,    &uc UC_EL_ZETA,       Z E T A)        // ζ
-ZMK_LEADER_SEQUENCE(el_eta,     &uc UC_EL_ETA,        E T A)          // η
-ZMK_LEADER_SEQUENCE(el_theta,   &uc UC_EL_THETA,      T H E T A)      // θ
-ZMK_LEADER_SEQUENCE(el_iota,    &uc UC_EL_IOTA,       I O T A)        // ι
-ZMK_LEADER_SEQUENCE(el_kappa,   &uc UC_EL_KAPPA,      K A P P A)      // κ
-ZMK_LEADER_SEQUENCE(el_lambda,  &uc UC_EL_LAMBDA,     L A M B D A)    // λ
-ZMK_LEADER_SEQUENCE(el_mu,      &uc UC_EL_MU,         M U)            // μ
-ZMK_LEADER_SEQUENCE(el_nu,      &uc UC_EL_NU,         N U)            // ν
-ZMK_LEADER_SEQUENCE(el_xi,      &uc UC_EL_XI,         X I)            // ξ
-ZMK_LEADER_SEQUENCE(el_omikron, &uc UC_EL_OMIKRON,    O M I K R O N)  // ο
-ZMK_LEADER_SEQUENCE(el_pi,      &uc UC_EL_PI,         P I)            // π
-ZMK_LEADER_SEQUENCE(el_rho,     &uc UC_EL_RHO,        R H O)          // ρ
-ZMK_LEADER_SEQUENCE(el_sigma,   &uc UC_EL_SIGMA,      S I G M A)      // σ
-ZMK_LEADER_SEQUENCE(el_tau,     &uc UC_EL_TAU,        T A U)          // τ
-ZMK_LEADER_SEQUENCE(el_upsilon, &uc UC_EL_UPSILON,    U P S I L ON)   // υ
-ZMK_LEADER_SEQUENCE(el_phi,     &uc UC_EL_PHI,        P H I)          // ϕ
-ZMK_LEADER_SEQUENCE(el_chi,     &uc UC_EL_CHI,        C H)            // χ
-ZMK_LEADER_SEQUENCE(el_psi,     &uc UC_EL_PSI,        P S)            // ψ
-ZMK_LEADER_SEQUENCE(el_omega,   &uc UC_EL_OMEGA,      O M E G A)      // ω
+};
