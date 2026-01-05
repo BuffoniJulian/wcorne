@@ -1,0 +1,9 @@
+/ {
+    macros {
+        email: email {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp u &kp b &kp u &kp @ &kp h &kp o &kp t &kp m &kp a &kp i &kp l &kp . &kp c &kp o &kp m &kp . &kp a &kp r >;
+        };
+    };
+};

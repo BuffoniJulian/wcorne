@@ -7,7 +7,7 @@
 #include <zmk-helpers/helper.h>
 #include "character_map.dtsi"
 #include "pomodoro.dtsi"
-#include "leader.dtsi"
+#include "macros.dtsi"
 
 / {
     chosen {
@@ -84,47 +84,7 @@
     };
 
     macros {
-        emaill: emaill {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp J &kp U &kp L &kp I &kp A &kp N>;
-        };
 
-        a_acute: a_acute {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp SQT &kp A>;
-        };
-
-        e_acute: e_acute {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp SQT &kp E>;
-        };
-
-        i_acute: i_acute {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp SQT &kp I>;
-        };
-
-        o_acute: o_acute {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp SQT &kp O>;
-        };
-
-        u_acute: u_acute {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp SQT &kp U>;
-        };
-
-        enye: enye {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp LSHIFT &kp GRAVE &kp N>;
-        };
     };
 
     behaviors {
@@ -146,40 +106,12 @@
             tapping-term-ms = <225>;
         };
 
-        up_arrow: up_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "UP_ARROW";
+        leader: leader {
+            compatible = "zmk,behavior-leader-key";
             #binding-cells = <0>;
-            bindings = <&kp SEMICOLON>, <&kp UP_ARROW>;
+            ignore-keys = <LSHFT RSHFT>;
 
-            tapping-term-ms = <200>;
-        };
-
-        left_arrow: left_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "LEFT_ARROW";
-            #binding-cells = <0>;
-            bindings = <&kp PERIOD>, <&kp LEFT>;
-
-            tapping-term-ms = <200>;
-        };
-
-        right_arrow: right_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "RIGHT_ARROW";
-            #binding-cells = <0>;
-            bindings = <&kp BACKSLASH>, <&kp RIGHT>;
-
-            tapping-term-ms = <200>;
-        };
-
-        down_arrow: down_arrow {
-            compatible = "zmk,behavior-tap-dance";
-            label = "DOWN_ARROW";
-            #binding-cells = <0>;
-            bindings = <&kp SLASH>, <&kp DOWN_ARROW>;
-
-            tapping-term-ms = <200>;
+            email_expansion { sequence = <E M A I L>; bindings = <&email>; };
         };
     };
 
