@@ -179,18 +179,9 @@
 
             tapping-term-ms = <200>;
         };
-
-        leader: leader {
-            compatible = "zmk,behavior-leader-key";
-            #binding-cells = <0>;
-            ignore-keys = <LSHFT RSHFT>;
-
-            email_expansion {
-                sequence = <E M A I L>;
-                bindings = <&kp A>;
-            };
-        };
     };
+
+#include "leader.dtsi"
 
     keymap {
         compatible = "zmk,keymap";
