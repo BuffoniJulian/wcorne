@@ -3,7 +3,7 @@
         email: email {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp U &kp B &kp @ &kp G &kp M &kp A &kp I &kp L>;
+            bindings = <&kp U &kp B &kp AT &kp G &kp M &kp A &kp I &kp L>;
         };
     };
 };
