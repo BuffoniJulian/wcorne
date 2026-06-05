@@ -8,6 +8,7 @@
 #include "character_map.dtsi"
 #include "pomodoro.dtsi"
 #include "espanso.dtsi"
+#include "leader.dtsi"
 
 / {
     chosen {
